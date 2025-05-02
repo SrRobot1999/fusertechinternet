@@ -1,16 +1,25 @@
 @extends('layouts.app')
 @section('content')
+
+@push('styles_template')
+<link rel="stylesheet" href="{{ asset('bundles/datatables/datatables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('bundles/prism/prism.css') }}">
+
+@endpush
+
+
 <!-- Pruebas para el toast-->
 @if (session('success'))
-    <div id="toast-success" class="fixed top-5 right-5 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg z-[9999] transition-opacity duration-300">
-        <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
-    </div>
+<div id="toast-success" class="fixed top-5 right-5 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg z-[9999] transition-opacity duration-300">
+    <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
+</div>
 @endif
 
 @if (session('error'))
-    <div id="toast-error" class="fixed top-5 right-5 bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg z-[9999] transition-opacity duration-300">
-        <i class="fas fa-times-circle mr-2"></i> {{ session('error') }}
-    </div>
+<div id="toast-error" class="fixed top-5 right-5 bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg z-[9999] transition-opacity duration-300">
+    <i class="fas fa-times-circle mr-2"></i> {{ session('error') }}
+</div>
 @endif
 <script>
     setTimeout(() => {
@@ -18,64 +27,95 @@
         document.getElementById('toast-error')?.classList.add('opacity-0');
     }, 3000); // Se oculta en 3 segundos
 </script>
-<!-- tabla para mostrar mi información de usuario -->
-<div class="overflow-x-auto mt-10 px-6">
-    <h2 class="text-3xl font-bold mb-6 text-green-700">Mi Perfil</h2>
 
-    <table class="min-w-full bg-white border border-gray-300 rounded shadow text-left">
-        <thead class="bg-gray-100 text-gray-700">
-            <tr>
-                <th class="py-3 px-6">Nombre</th>
-                <th class="py-3 px-6">Correo</th>
-                <th class="py-3 px-6">Rol</th>
-                <th class="py-3 px-6 text-center">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="border-t">
-                <td class="py-3 px-6">{{ $user->nombre }}</td>
-                <td class="py-3 px-6">{{ $user->email }}</td>
-                <td class="py-3 px-6">{{ $user->rol->nombre ?? 'Sin Rol' }}</td>
-                <td class="py-3 px-6 text-center space-x-2">
-                    <button onclick="openEditModal()" class="text-blue-600 hover:text-blue-800 text-xl">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button onclick="openDeleteModal()" class="text-red-600 hover:text-red-800 text-xl">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Mi perfil</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="table-profile">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Rol</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ $user->nombre }} </td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->rol->nombre ?? 'Sin Rol' }}</td>
+                                <td class="py-3 px-6 text-center space-x-2">
+                                    <div class="d-flex gap-3">
+                                        <button class="text-blue-600 hover:text-blue-800 text-xl" data-toggle="modal" data-target="#editModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button onclick="openDeleteModal()" class="text-red-600 hover:text-red-800 text-xl">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+
+
 <!-- Modal Editar -->
-<div id="editModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-20 flex justify-center items-center z-50 transition-opacity duration-300">
-    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
-        <h3 class="text-lg font-bold mb-4 text-center">Editar Perfil</h3>
-        <form id="editForm" method="POST" action="{{ route('usuarios.update', $user->id) }}">
-            @csrf
-            @method('PUT')
 
-            <div class="mb-4">
-                <label class="block text-gray-700">Nombre</label>
-                <input type="text" name="nombre" value="{{ $user->nombre }}" class="border p-2 rounded w-full" required>
-            </div>
-
-            <div class="mb-4">
-                <label class="block text-gray-700">Correo</label>
-                <input type="email" name="email" value="{{ $user->email }}" class="border p-2 rounded w-full" required>
-            </div>
-
-            <div class="flex justify-center space-x-4 mt-6">
-                <button type="button" onclick="closeEditModal()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                    Cancelar
-                </button>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded">
-                    Guardar
-                </button>
-            </div>
-        </form>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" style="z-index: 1055;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="editForm" method="POST" action="{{ route('usuarios.update', $user->id) }}">
+                @csrf
+                @method('PUT')
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar perfil</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" name="nombre" value="{{ $user->nombre }}"">
+                        </div>
+                    </div>
+                    <div class=" form-group">
+                            <label>Email</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" name="email" value="{{ $user->email }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-whitesmoke br">
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -119,4 +159,23 @@
         document.getElementById('deleteModal').classList.add('hidden');
     }
 </script>
+
 @endsection
+
+
+@push('scripts_template')
+<!-- JS Libraies -->
+<script src="{{ asset('bundles/datatables/datatables.min.js') }}"></script>
+<script src="{{ asset('bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('bundles/jquery-ui/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('bundles/prism/prism.js') }}"></script>
+
+<script>
+    $("#table-profile").dataTable({
+        "columnDefs": [{
+            "sortable": false,
+            "targets": [2, 3]
+        }]
+    });
+</script>
+@endpush
