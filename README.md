@@ -19,48 +19,48 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 - [Robust background job processing](https://laravel.com/docs/queues).
 - [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<!-- Este parte es de prueba falata hacer commit-->
+<p align="center"><a href="https://www.fusertech.com.pe/" target="_blank"><img src="https://fusertech.com.pe/fusertech/img/Logo_original.png" width="400" alt="FuserTech Internet Logo"></a></p>
 
-## Learning Laravel
+<p align="center">
+<a href="#"><img src="https://img.shields.io/badge/Build-Passing-brightgreen" alt="Build Status"></a>
+<a href="#"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License"></a>
+</p>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Acerca de FuserTech Internet
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+**FuserTech Internet** es una plataforma diseñada para ofrecer soluciones innovadoras en el ámbito de la conectividad y servicios de internet. Nuestro objetivo es proporcionar herramientas eficientes y accesibles para gestionar y optimizar redes de manera sencilla.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Características principales
 
-## Laravel Sponsors
+- Gestión avanzada de usuarios y planes de internet.
+- Monitoreo en tiempo real del uso de ancho de banda.
+- Integración con sistemas de facturación automatizada.
+- Panel de administración intuitivo y fácil de usar.
+- Soporte para múltiples idiomas y personalización.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Instalación
 
-### Premium Partners
+Sigue estos pasos para configurar el proyecto en tu entorno local (XAMPP):
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+1. Clona este repositorio:
+   ```bash
+   git clone https://github.com/tu-usuario/fusertechinternet.git
 
-## Contributing
+2. Instala las dependencias:
+    ``` bash
+    composer install
+    npm install
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. configura el archivo .env:
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
 
-## Code of Conduct
+4. Configura la base de datos en el archivo `.env` y ejecuta las migraciones:
+    ```bash
+    php artisan migrate --seed
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+5. Inicia el servidor de desarrollo:
+    ```bash
+    php artisan serve

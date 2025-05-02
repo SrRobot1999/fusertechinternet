@@ -35,5 +35,10 @@ class User extends Authenticatable
             $this->attributes['password'] = $value;
         }
     }
-}
 
+    // Relación con el modelo Rol
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class, 'rol_id');
+    }
+}

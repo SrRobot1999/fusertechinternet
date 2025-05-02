@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\PerfilController;
 
 // Ruta principal protegida (home)
 Route::get('/home', function () {
@@ -21,3 +22,14 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
+// Ruta para mostrar el perfil del usuario autenticado
+Route::get('/perfil', [PerfilController::class, 'show'])->middleware('auth')->name('perfil');
+
+// Rutas RESTful para usuarios (incluye usuarios.destroy para DELETE)
+Route::resource('usuarios', PerfilController::class);
+
+// Ruta para actualizar el perfil del usuario autenticado
+Route::put('/usuarios/{id}', [PerfilController::class, 'update'])->name('usuarios.update');
+
+
