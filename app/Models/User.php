@@ -20,7 +20,7 @@ class User extends Authenticatable
     public $timestamps = false;
 
     // Campos que se pueden rellenar
-    protected $fillable = ['email', 'password', 'nombre']; // ajusta según tu BD
+    protected $fillable = ['email', 'password', 'nombre'];
 
     // Campos que deben estar ocultos
     protected $hidden = ['password'];

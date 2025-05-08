@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\EquipoController;
 
 // Ruta principal protegida (home)
 Route::get('/home', function () {
@@ -32,4 +33,10 @@ Route::resource('usuarios', PerfilController::class);
 // Ruta para actualizar el perfil del usuario autenticado
 Route::put('/usuarios/{id}', [PerfilController::class, 'update'])->name('usuarios.update');
 
+// Ruta para mostrar la vista de equipos
+Route::get('/equipos', [EquipoController::class, 'show'])->name('equipos');
 
+// Rutas para editar y eliminar equipos (sin funcionalidad)
+Route::get('/equipos/{id}/edit', [EquipoController::class, 'edit']);
+Route::put('/equipos/{id}', [EquipoController::class, 'update']);
+Route::delete('/equipos/{id}', [EquipoController::class, 'destroy']);

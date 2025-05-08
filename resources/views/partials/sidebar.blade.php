@@ -14,8 +14,8 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li class="dropdown">
-                <a href="{{ route('perfil') }}" class="nav-link">
+            <li class="dropdown {{ Request::is('equipos') ? 'active' : '' }}">
+                <a href="{{ route('equipos') }}" class="nav-link">
                     <i data-feather="server"></i>
                     <span>Equipos</span>
                 </a>
@@ -64,8 +64,6 @@
                     </button>
                 </form>        
             </li>
-
-
         </ul>
     </aside>
 </div>

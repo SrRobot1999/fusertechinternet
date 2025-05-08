@@ -5,9 +5,7 @@
 <link rel="stylesheet" href="{{ asset('bundles/datatables/datatables.min.css') }}">
 <link rel="stylesheet" href="{{ asset('bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('bundles/prism/prism.css') }}">
-
 @endpush
-
 
 <!-- Pruebas para el toast-->
 @if (session('success'))
@@ -21,11 +19,12 @@
     <i class="fas fa-times-circle mr-2"></i> {{ session('error') }}
 </div>
 @endif
+
 <script>
     setTimeout(() => {
         document.getElementById('toast-success')?.classList.add('opacity-0');
         document.getElementById('toast-error')?.classList.add('opacity-0');
-    }, 3000); // Se oculta en 3 segundos
+    }, 3000); // Se oculta en 3 segundos el Toast
 </script>
 
 <div class="row">
@@ -69,10 +68,7 @@
     </div>
 </div>
 
-
-
 <!-- Modal Editar -->
-
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" style="z-index: 1055;">
     <div class="modal-dialog" role="document">
@@ -164,7 +160,7 @@
 
 
 @push('scripts_template')
-<!-- JS Libraies -->
+<!-- JS Libraries -->
 <script src="{{ asset('bundles/datatables/datatables.min.js') }}"></script>
 <script src="{{ asset('bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('bundles/jquery-ui/jquery-ui.min.js') }}"></script>
