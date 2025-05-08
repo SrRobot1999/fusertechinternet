@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\EquipoController;
+use App\Http\Controllers\ClienteController;
 
 // Ruta principal protegida (home)
 Route::get('/home', function () {
@@ -40,3 +41,6 @@ Route::get('/equipos', [EquipoController::class, 'show'])->name('equipos');
 Route::get('/equipos/{id}/edit', [EquipoController::class, 'edit']);
 Route::put('/equipos/{id}', [EquipoController::class, 'update']);
 Route::delete('/equipos/{id}', [EquipoController::class, 'destroy']);
+
+// Ruta para mostrar la vista de clientes 
+Route::get('/clientes', [ClienteController::class, 'show'])->name('clientes');

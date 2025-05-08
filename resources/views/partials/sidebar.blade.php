@@ -20,10 +20,16 @@
                     <span>Equipos</span>
                 </a>
             </li>
+            <li class="dropdown {{ Request::is('clientes') ? 'active' : '' }}">
+                <a href="{{ route('clientes') }}" class="nav-link">
+                    <i data-feather="users"></i>
+                    <span>Clientes</span>
+                </a>
+            </li>
             <li class="dropdown">
                 <a href="{{ route('perfil') }}" class="nav-link">
                     <i data-feather="users"></i>
-                    <span>Clientes</span>
+                    <span>Contratos</span>
                 </a>
             </li>
             <li class="dropdown">
