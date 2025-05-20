@@ -1,11 +1,12 @@
 @extends('layouts.app')
-@section('content')
 
 @push('styles_template')
 <link rel="stylesheet" href="{{ asset('bundles/datatables/datatables.min.css') }}">
 <link rel="stylesheet" href="{{ asset('bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('bundles/prism/prism.css') }}">
 @endpush
+
+@section('content')
 
 @if (session('success'))
 <div id="toast-success" class="fixed top-5 right-5 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg z-[9999] transition-opacity duration-300">
@@ -26,43 +27,35 @@
     }, 3000);
 </script>
 
-<!-- Tabla para listar los clientes -->
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h4>Clientes</h4>
+                <h4>Usuarios Registrados</h4>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-striped" id="table-clientes">
+                    <table class="table table-striped" id="table-usuarios">
                         <thead>
                             <tr>
                                 <th>Nombre</th>
-                                <th>DNI / RUC</th>
-                                <th>Teléfono</th>
-                                <th>Dirección</th>
-                                <th>Zona</th>
-                                <th>Estado</th>
+                                <th>Email</th>
+                                <th>Rol</th>
+                                <th>Fecha de Registro</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($clientes as $cliente)
+                            @foreach ($usuarios as $usuario)
                             <tr>
-                                <td>{{ $cliente->nombre }}</td>
-                                <td>{{ $cliente->dni_ruc }}</td>
-                                <td>{{ $cliente->telefono }}</td>
-                                <td>{{ $cliente->direccion }}</td>
-                                <td>{{ $cliente->zona->nombre ?? 'Sin zona' }}</td>
-                                <td>{{ $cliente->estado ? 'Activo' : 'Inactivo' }}</td>
+                                <td>{{ $usuario->nombre }}</td>
+                                <td>{{ $usuario->email }}</td>
+                                <td>{{ $usuario->rol->nombre ?? 'Sin rol' }}</td>
+                                <td>{{ $usuario->created_at }}</td>
                                 <td class="py-3 px-6 text-center space-x-2">
                                     <div class="d-flex gap-3">
                                         <button class="text-blue-600 hover:text-blue-800 text-xl" data-toggle="modal" data-target="#editModal">
                                             <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button onclick="openViewModal()" class="text-green-600 hover:text-green-800 text-xl">
-                                            <i class="fas fa-eye"></i>
                                         </button>
                                         <button onclick="openDeleteModal()" class="text-red-600 hover:text-red-800 text-xl">
                                             <i class="fas fa-trash-alt"></i>
@@ -79,7 +72,6 @@
     </div>
 </div>
 
-<!-- Puedes adaptar los modales si quieres permitir edición/eliminación directamente -->
 @endsection
 
 @push('scripts_template')
@@ -89,20 +81,11 @@
 <script src="{{ asset('bundles/prism/prism.js') }}"></script>
 
 <script>
-    $("#table-clientes").dataTable({
+    $("#table-usuarios").dataTable({
         "columnDefs": [{
             "sortable": false,
-            "targets": [2, 5]
+            "targets": [4]
         }]
     });
-
-    function openDeleteModal(clienteId) {
-        document.getElementById('deleteForm').action = `/clientes/${clienteId}`;
-        document.getElementById('deleteModal').classList.remove('hidden');
-    }
-
-    function closeDeleteModal() {
-        document.getElementById('deleteModal').classList.add('hidden');
-    }
 </script>
 @endpush

@@ -13,14 +13,11 @@ class User extends Authenticatable
     //Indica la tabla personalizada
     protected $table = 'usuarios';
 
-    //Si tu clave primaria no es "id", especifícalo
-    // protected $primaryKey = 'id_usuario';
-
     //Si no tienes created_at y updated_at
     public $timestamps = false;
 
     // Campos que se pueden rellenar
-    protected $fillable = ['email', 'password', 'nombre'];
+    protected $fillable = ['email', 'password', 'nombre', 'rol_id'];
 
     // Campos que deben estar ocultos
     protected $hidden = ['password'];

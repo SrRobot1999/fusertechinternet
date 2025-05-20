@@ -5,6 +5,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ServicioController;
+use App\Http\Controllers\PagoController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\UsuarioController;
 
 // Ruta principal protegida (home)
 Route::get('/home', function () {
@@ -44,3 +48,19 @@ Route::delete('/equipos/{id}', [EquipoController::class, 'destroy']);
 
 // Ruta para mostrar la vista de clientes 
 Route::get('/clientes', [ClienteController::class, 'show'])->name('clientes');
+
+// Ruta para mostrar las vista servicios
+Route::get('/servicios', [ServicioController::class, 'index'])->name('servicios');
+
+// Ruta para mostrar la vista de pagos
+Route::get('/pagos', [PagoController::class, 'index'])->name('pagos');
+
+// Ruta para mostrar la vista de tickets
+Route::get('/tickets', [TicketController::class, 'index'])->name('tickets');
+
+// Ruta para mostrar la vista de usuarios
+Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios');
+
+// Ruta para mostrar la vista de bases
+Route::get('/bases', [App\Http\Controllers\BaseController::class, 'index'])->name('bases');
+Route::delete('/bases/{id}', [App\Http\Controllers\BaseController::class, 'destroy'])->name('bases.destroy');

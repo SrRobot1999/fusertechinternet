@@ -7,6 +7,7 @@ use App\Models\Cliente;
 
 class ClienteController extends Controller
 {
+    //segun Chat GPT la funcion debe llemarse index por que show es para mostrar un solo registro
     public function show()
     {
         $clientes = Cliente::with('zona')->get();

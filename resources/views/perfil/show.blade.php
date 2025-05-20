@@ -40,6 +40,7 @@
                             <tr>
                                 <th>Nombre</th>
                                 <th>Correo</th>
+                                <th>Contraseña</th>
                                 <th>Rol</th>
                                 <th>Acciones</th>
                             </tr>
@@ -48,6 +49,7 @@
                             <tr>
                                 <td>{{ $user->nombre }} </td>
                                 <td>{{ $user->email }}</td>
+                                <td><input type="password" class="form-control-plaintext" value="••••••••" readonly></td>
                                 <td>{{ $user->rol->nombre ?? 'Sin Rol' }}</td>
                                 <td class="py-3 px-6 text-center space-x-2">
                                     <div class="d-flex gap-3">
@@ -91,25 +93,36 @@
                                     <i class="fas fa-user"></i>
                                 </div>
                             </div>
-                            <input type="text" class="form-control" name="nombre" value="{{ $user->nombre }}"">
+                            <input type="text" class="form-control" name="nombre" value="{{ $user->nombre }}">
                         </div>
                     </div>
                     <div class=" form-group">
-                            <label>Email</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <i class="fas fa-envelope"></i>
-                                    </div>
+                        <label>Email</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-envelope"></i>
                                 </div>
-                                <input type="text" class="form-control" name="email" value="{{ $user->email }}">
                             </div>
+                            <input type="text" class="form-control" name="email" value="{{ $user->email }}">
                         </div>
                     </div>
-                    <div class="modal-footer bg-whitesmoke br">
-                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <div class="form-group">
+                        <label>Nueva contraseña</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                            </div>
+                            <input type="password" class="form-control" name="password" placeholder="••••••">
+                        </div>
                     </div>
+                </div>
+                <div class="modal-footer bg-whitesmoke br">
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
             </form>
         </div>
     </div>
@@ -170,7 +183,7 @@
     $("#table-profile").dataTable({
         "columnDefs": [{
             "sortable": false,
-            "targets": [2, 3]
+            "targets": [4]
         }]
     });
 </script>
