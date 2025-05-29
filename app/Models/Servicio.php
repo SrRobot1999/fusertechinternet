@@ -7,7 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Servicio extends Model
 {
+    use HasFactory;
+    
+    public $timestamps = false;
+
     protected $table = 'servicios';
+
+    protected $fillable = [
+        'cliente_id',
+        'plan_id',
+        'zona_id',
+        'fecha_inicio',
+        'estado'
+    ];
 
     public function cliente()
     {

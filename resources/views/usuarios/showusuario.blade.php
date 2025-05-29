@@ -54,7 +54,7 @@
                                 <td>{{ $usuario->created_at }}</td>
                                 <td class="py-3 px-6 text-center space-x-2">
                                     <div class="d-flex gap-3">
-                                        <button class="text-blue-600 hover:text-blue-800 text-xl" data-toggle="modal" data-target="#editModal">
+                                        <button class="text-blue-600 hover:text-blue-800 text-xl" data-toggle="modal" data-target="#editModal-{{ $usuario->id }}">
                                             <i class="fas fa-edit"></i>
                                         </button>
                                         <button onclick="openDeleteModal()" class="text-red-600 hover:text-red-800 text-xl">
@@ -63,6 +63,51 @@
                                     </div>
                                 </td>
                             </tr>
+                            <!-- Modal para editar -->
+                            <div class="modal fade" id="editModal-{{ $usuario->id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <form method="POST" action="{{ route('usuarios.update', $usuario->id) }}">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Editar Usuario</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label>Nombre</label>
+                                                    <input type="text" name="nombre" value="{{ $usuario->nombre }}" class="form-control" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Email</label>
+                                                    <input type="email" name="email" value="{{ $usuario->email }}" class="form-control" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Rol</label>
+                                                    <select name="rol_id" class="form-control" required>
+                                                        @foreach(App\Models\Rol::all() as $rol)
+                                                        <option value="{{ $rol->id }}" {{ $usuario->rol_id == $rol->id ? 'selected' : '' }}>
+                                                            {{ $rol->nombre }}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Contraseña (solo si deseas cambiarla)</label>
+                                                    <input type="password" name="password" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                             @endforeach
                         </tbody>
                     </table>
@@ -72,6 +117,30 @@
     </div>
 </div>
 
+<!-- Modal Eliminar -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="deleteForm" method="POST">
+            @csrf
+            @method('DELETE')
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmar eliminación</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div> 
 @endsection
 
 @push('scripts_template')
@@ -79,7 +148,6 @@
 <script src="{{ asset('bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('bundles/jquery-ui/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('bundles/prism/prism.js') }}"></script>
-
 <script>
     $("#table-usuarios").dataTable({
         "columnDefs": [{
@@ -88,4 +156,12 @@
         }]
     });
 </script>
+<script>
+    function openDeleteModal(actionUrl) {
+        const form = document.getElementById('deleteForm');
+        form.action = actionUrl;
+        $('#deleteModal').modal('show');
+    }
+</script>
+
 @endpush

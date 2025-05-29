@@ -49,19 +49,22 @@
                         </thead>
                         <tbody>
                             @foreach ($tickets as $ticket)
-                            <tr>
+                            <tr data-id="{{ $ticket->id }}">
                                 <td>{{ $ticket->cliente->nombre ?? 'Sin cliente' }}</td>
-                                <td>{{ $ticket->usuario->name ?? 'Sin usuario' }}</td>
+                                <td>{{ $ticket->usuario->nombre ?? 'Sin usuario' }}</td>
                                 <td>{{ $ticket->asunto }}</td>
                                 <td>{{ Str::limit($ticket->descripcion, 50) }}</td>
                                 <td>{{ $ticket->estado == 1 ? 'Terminado' : 'Pendiente'}}</td>
                                 <td>{{ $ticket->fecha_creacion }}</td>
                                 <td class="py-3 px-6 text-center space-x-2">
                                     <div class="d-flex gap-3">
-                                        <button class="text-blue-600 hover:text-blue-800 text-xl" data-toggle="modal" data-target="#editModal">
+                                        <button onclick="openViewModal('{{ $ticket->id }}')" class="text-green-600 hover:text-green-800 text-xl">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-blue-600 hover:text-blue-800 text-xl btn-edit" data-toggle="modal" data-target="#editModal" data-id="{{ $ticket->id }}">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button onclick="openDeleteModal()" class="text-red-600 hover:text-red-800 text-xl">
+                                        <button onclick="openDeleteModal('{{ $ticket->id }}')" class="text-red-600 hover:text-red-800 text-xl btn-delete" data-toggle="modal" data-target="#deleteModal" data-id="{{ $ticket->id }}">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </div>
@@ -73,6 +76,123 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal Ver Ticket -->
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalle del Ticket</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Cliente</dt>
+                    <dd class="col-sm-8" id="viewCliente"></dd>
+                    <dt class="col-sm-4">Usuario</dt>
+                    <dd class="col-sm-8" id="viewUsuario"></dd>
+                    <dt class="col-sm-4">Asunto</dt>
+                    <dd class="col-sm-8" id="viewAsunto"></dd>
+                    <dt class="col-sm-4">Descripción</dt>
+                    <dd class="col-sm-8" id="viewDescripcion"></dd>
+                    <dt class="col-sm-4">Estado</dt>
+                    <dd class="col-sm-8" id="viewEstado"></dd>
+                    <dt class="col-sm-4">Fecha de Creación</dt>
+                    <dd class="col-sm-8" id="viewFecha"></dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Ticket -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="editForm" method="POST" action="">
+            @csrf
+            @method('PUT')
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Ticket</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Cliente</label>
+                        <select class="form-control" name="cliente_id" id="editCliente">
+                            @foreach($clientes as $cliente)
+                            <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Usuario</label>
+                        <select class="form-control" name="usuario_id" id="editUsuario">
+                            @foreach($usuarios as $usuario)
+                            <option value="{{ $usuario->id }}">{{ $usuario->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Asunto</label>
+                        <input type="text" class="form-control" name="asunto" id="editAsunto" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea class="form-control" name="descripcion" id="editDescripcion" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select class="form-control" name="estado" id="editEstado">
+                            <option value="1">Terminado</option>
+                            <option value="0">Pendiente</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de Creación</label>
+                        <input type="date" class="form-control" name="fecha_creacion" id="editFecha" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Eliminar Ticket -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="deleteForm" method="POST" action="">
+            @csrf
+            @method('DELETE')
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">¿Eliminar Ticket?</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -91,5 +211,66 @@
             "targets": [6]
         }]
     });
+
+    // Ver Ticket
+    function openViewModal(ticketId) {
+        fetch("{{ url('tickets') }}/" + ticketId)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('viewCliente').textContent = data.cliente?.nombre ?? '';
+                document.getElementById('viewUsuario').textContent = data.usuario?.nombre ?? '';
+                document.getElementById('viewAsunto').textContent = data.asunto ?? '';
+                document.getElementById('viewDescripcion').textContent = data.descripcion ?? '';
+                document.getElementById('viewEstado').textContent = data.estado == 1 ? 'Terminado' : 'Pendiente';
+                document.getElementById('viewFecha').textContent = data.fecha_creacion ?? '';
+                $('#viewModal').modal('show');
+            });
+    }
+
+    // Editar Ticket
+    document.querySelectorAll('#table-tickets .btn-edit').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const row = btn.closest('tr');
+            const ticketId = row.getAttribute('data-id');
+            const clienteNombre = row.children[0].textContent.trim();
+            const usuarioNombre = row.children[1].textContent.trim();
+            const asunto = row.children[2].textContent.trim();
+            const descripcion = row.children[3].textContent.trim();
+            const estadoTexto = row.children[4].textContent.trim();
+            const fecha = row.children[5].textContent.trim();
+
+            // Seleccionar cliente
+            const clienteSelect = document.getElementById('editCliente');
+            for (let i = 0; i < clienteSelect.options.length; i++) {
+                if (clienteSelect.options[i].text === clienteNombre) {
+                    clienteSelect.selectedIndex = i;
+                    break;
+                }
+            }
+            // Seleccionar usuario
+            const usuarioSelect = document.getElementById('editUsuario');
+            for (let i = 0; i < usuarioSelect.options.length; i++) {
+                if (usuarioSelect.options[i].text === usuarioNombre) {
+                    usuarioSelect.selectedIndex = i;
+                    break;
+                }
+            }
+            document.getElementById('editAsunto').value = asunto;
+            document.getElementById('editDescripcion').value = descripcion;
+            document.getElementById('editEstado').value = (estadoTexto === 'Terminado') ? '1' : '0';
+            document.getElementById('editFecha').value = fecha;
+
+            // Actualizar la acción del formulario
+            const url = "{{ route('tickets.update', ':id') }}".replace(':id', ticketId);
+            document.getElementById('editForm').action = url;
+        });
+    });
+
+    // Eliminar Ticket
+    function openDeleteModal(ticketId) {
+        const url = "{{ route('tickets.destroy', ':id') }}".replace(':id', ticketId);
+        document.getElementById('deleteForm').action = url;
+        $('#deleteModal').modal('show');
+    }
 </script>
 @endpush

@@ -54,9 +54,9 @@
                                 <td class="py-3 px-6 text-center space-x-2">
                                     <div class="d-flex gap-3">
                                         <button class="text-blue-600 hover:text-blue-800 text-xl" data-toggle="modal" data-target="#editModal">
-                                            <i class="fas fa-edit"></i>
+                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button onclick="openDeleteModal()" class="text-red-600 hover:text-red-800 text-xl">
+                                        <button class="text-red-600 hover:text-red-800 text-xl" data-toggle="modal" data-target="#deleteModal">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </div>
@@ -129,28 +129,31 @@
 </div>
 
 <!-- Modal Eliminar -->
-<div id="deleteModal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-20 flex justify-center items-center z-50">
-    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
-        <h3 class="text-lg font-bold mb-4 text-center text-red-600">¿Eliminar Perfil?</h3>
-        <p class="text-center mb-6 text-gray-600">Esta acción no se puede deshacer.</p>
-
-        <div class="flex justify-center space-x-4 mt-6">
-            <button type="button" onclick="closeDeleteModal()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                Cancelar
-            </button>
-
-            <form id="deleteForm" method="POST" action="{{ route('usuarios.destroy', $user->id) }}">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded">
-                    Eliminar
-                </button>
-            </form>
-        </div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="deleteForm" method="POST" action="{{ route('usuarios.destroy', $user->id) }}">
+            @csrf
+            @method('DELETE')
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel">¿Eliminar Perfil?</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
-<!-- Scripts -->
+<!-- Scripts -verificar si todas las funciones estan siendo utilizadas-->
 <script>
     function openEditModal() {
         document.getElementById('editModal').classList.remove('hidden');
@@ -168,9 +171,7 @@
         document.getElementById('deleteModal').classList.add('hidden');
     }
 </script>
-
 @endsection
-
 
 @push('scripts_template')
 <!-- JS Libraries -->
@@ -178,7 +179,6 @@
 <script src="{{ asset('bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('bundles/jquery-ui/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('bundles/prism/prism.js') }}"></script>
-
 <script>
     $("#table-profile").dataTable({
         "columnDefs": [{

@@ -48,7 +48,7 @@
                         </thead>
                         <tbody>
                             @foreach ($pagos as $pago)
-                            <tr>
+                            <tr data-id="{{ $pago->id }}">
                                 <td>{{ $pago->cliente->nombre ?? 'Sin cliente' }}</td>
                                 <td>S/. {{ number_format($pago->monto, 2) }}</td>
                                 <td>{{ $pago->fecha_pago }}</td>
@@ -56,10 +56,13 @@
                                 <td>{{ $pago->referencia }}</td>
                                 <td class="py-3 px-6 text-center space-x-2">
                                     <div class="d-flex gap-3">
-                                        <button class="text-blue-600 hover:text-blue-800 text-xl" data-toggle="modal" data-target="#editModal">
+                                        <button onclick="openViewModal('{{ $pago->id }}')" class="text-green-600 hover:text-green-800 text-xl">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-blue-600 hover:text-blue-800 text-xl btn-edit" data-toggle="modal" data-target="#editModal" data-id="{{ $pago->id }}">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button onclick="openDeleteModal()" class="text-red-600 hover:text-red-800 text-xl">
+                                        <button onclick="openDeleteModal('{{ $pago->id }}')" class="text-red-600 hover:text-red-800 text-xl btn-delete" data-toggle="modal" data-target="#deleteModal" data-id="{{ $pago->id }}">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </div>
@@ -71,6 +74,110 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal Ver Pago -->
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalle del Pago</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Cliente</dt>
+                    <dd class="col-sm-8" id="viewCliente"></dd>
+                    <dt class="col-sm-4">Monto</dt>
+                    <dd class="col-sm-8" id="viewMonto"></dd>
+                    <dt class="col-sm-4">Fecha de Pago</dt>
+                    <dd class="col-sm-8" id="viewFechaPago"></dd>
+                    <dt class="col-sm-4">Método de Pago</dt>
+                    <dd class="col-sm-8" id="viewMetodoPago"></dd>
+                    <dt class="col-sm-4">Referencia</dt>
+                    <dd class="col-sm-8" id="viewReferencia"></dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Pago -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="editForm" method="POST" action="">
+            @csrf
+            @method('PUT')
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Pago</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Cliente</label>
+                        <select class="form-control" name="cliente_id" id="editCliente">
+                            @foreach($clientes as $cliente)
+                            <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Monto</label>
+                        <input type="number" step="0.01" class="form-control" name="monto" id="editMonto">
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de Pago</label>
+                        <input type="date" class="form-control" name="fecha_pago" id="editFechaPago">
+                    </div>
+                    <div class="form-group">
+                        <label>Método de Pago</label>
+                        <input type="text" class="form-control" name="metodo_pago" id="editMetodoPago">
+                    </div>
+                    <div class="form-group">
+                        <label>Referencia</label>
+                        <input type="text" class="form-control" name="referencia" id="editReferencia">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Eliminar Pago -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="deleteForm" method="POST" action="">
+            @csrf
+            @method('DELETE')
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">¿Eliminar Pago?</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -89,5 +196,56 @@
             "targets": [2, 5]
         }]
     });
+
+    // Ver Pago
+    function openViewModal(pagoId) {
+        fetch("{{ url('pagos') }}/" + pagoId)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('viewCliente').textContent = data.cliente?.nombre ?? '';
+                document.getElementById('viewMonto').textContent = 'S/. ' + parseFloat(data.monto).toFixed(2);
+                document.getElementById('viewFechaPago').textContent = data.fecha_pago ?? '';
+                document.getElementById('viewMetodoPago').textContent = data.metodo_pago ?? '';
+                document.getElementById('viewReferencia').textContent = data.referencia ?? '';
+                $('#viewModal').modal('show');
+            });
+    }
+
+    // Editar Pago
+    document.querySelectorAll('#table-pagos .btn-edit').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const row = btn.closest('tr');
+            const pagoId = row.getAttribute('data-id');
+            const clienteNombre = row.children[0].textContent.trim();
+            const monto = row.children[1].textContent.replace('S/.', '').trim();
+            const fechaPago = row.children[2].textContent.trim();
+            const metodoPago = row.children[3].textContent.trim();
+            const referencia = row.children[4].textContent.trim();
+
+            // Seleccionar cliente
+            const clienteSelect = document.getElementById('editCliente');
+            for (let i = 0; i < clienteSelect.options.length; i++) {
+                if (clienteSelect.options[i].text === clienteNombre) {
+                    clienteSelect.selectedIndex = i;
+                    break;
+                }
+            }
+            document.getElementById('editMonto').value = monto;
+            document.getElementById('editFechaPago').value = fechaPago;
+            document.getElementById('editMetodoPago').value = metodoPago;
+            document.getElementById('editReferencia').value = referencia;
+
+            // Actualizar la acción del formulario
+            const url = "{{ route('pagos.update', ':id') }}".replace(':id', pagoId);
+            document.getElementById('editForm').action = url;
+        });
+    });
+
+    // Eliminar Pago
+    function openDeleteModal(pagoId) {
+        const url = "{{ route('pagos.destroy', ':id') }}".replace(':id', pagoId);
+        document.getElementById('deleteForm').action = url;
+        $('#deleteModal').modal('show');
+    }
 </script>
 @endpush

@@ -50,7 +50,7 @@
                         </thead>
                         <tbody>
                             @foreach ($bases as $base)
-                            <tr>
+                            <tr data-id="{{ $base->id }}">
                                 <td>{{ $base->id }}</td>
                                 <td>{{ $base->nombre }}</td>
                                 <td>{{ $base->direccion }}</td>
@@ -60,10 +60,13 @@
                                 <td>{{ $base->created_at }}</td>
                                 <td class="py-3 px-6 text-center space-x-2">
                                     <div class="d-flex gap-3">
-                                        <button class="text-blue-600 hover:text-blue-800 text-xl" data-toggle="modal" data-target="#editModal">
+                                        <button onclick="openViewModal('{{ $base->id }}')" class="text-green-600 hover:text-green-800 text-xl">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-blue-600 hover:text-blue-800 text-xl btn-edit" data-toggle="modal" data-target="#editModal" data-id="{{ $base->id }}">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button onclick="openDeleteModal()" class="text-red-600 hover:text-red-800 text-xl">
+                                        <button onclick="openDeleteModal('{{ $base->id }}')" class="text-red-600 hover:text-red-800 text-xl btn-delete" data-id="{{ $base->id }}">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </div>
@@ -75,6 +78,106 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal Ver Base -->
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalle de la Base</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Nombre</dt>
+                    <dd class="col-sm-8" id="viewNombre"></dd>
+                    <dt class="col-sm-4">Dirección</dt>
+                    <dd class="col-sm-8" id="viewDireccion"></dd>
+                    <dt class="col-sm-4">Fecha de Inicio</dt>
+                    <dd class="col-sm-8" id="viewFecha"></dd>
+                    <dt class="col-sm-4">Altura</dt>
+                    <dd class="col-sm-8" id="viewAltura"></dd>
+                    <dt class="col-sm-4">Color</dt>
+                    <dd class="col-sm-8" id="viewColor"></dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Base -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="editForm" method="POST" action="">
+            @csrf
+            @method('PUT')
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Base</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control" name="nombre" id="editNombreInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Dirección</label>
+                        <input type="text" class="form-control" name="direccion" id="editDireccionInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de Inicio</label>
+                        <input type="date" class="form-control" name="fecha_funcionamiento" id="editFechaInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Altura</label>
+                        <input type="number" step="0.01" class="form-control" name="altura" id="editAlturaInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Color</label>
+                        <input type="text" class="form-control" name="color" id="editColorInput" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Eliminar Base -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="deleteForm" method="POST" action="">
+            @csrf
+            @method('DELETE')
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">¿Eliminar Base?</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -90,8 +193,46 @@
     $("#table-bases").dataTable({
         "columnDefs": [{
             "sortable": false,
-            "targets": [8]
+            "targets": [2, 5]
         }]
     });
+
+    // Ver Base
+    function openViewModal(baseId) {
+        fetch("{{ url('bases') }}/" + baseId)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('viewNombre').textContent = data.nombre ?? '';
+                document.getElementById('viewDireccion').textContent = data.direccion ?? '';
+                document.getElementById('viewFecha').textContent = data.fecha_funcionamiento ?? '';
+                document.getElementById('viewAltura').textContent = data.altura ?? '';
+                document.getElementById('viewColor').textContent = data.color ?? '';
+                $('#viewModal').modal('show');
+            });
+    }
+
+    // Editar Base
+    document.querySelectorAll('#table-bases .btn-edit').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const row = btn.closest('tr');
+            const baseId = row.getAttribute('data-id');
+            document.getElementById('editNombreInput').value = row.children[1].textContent.trim();
+            document.getElementById('editDireccionInput').value = row.children[2].textContent.trim();
+            document.getElementById('editFechaInput').value = row.children[3].textContent.trim();
+            document.getElementById('editAlturaInput').value = row.children[4].textContent.trim();
+            document.getElementById('editColorInput').value = row.children[5].textContent.trim();
+
+            // Actualizar la acción del formulario
+            const url = "{{ route('bases.update', ':id') }}".replace(':id', baseId);
+            document.getElementById('editForm').action = url;
+        });
+    });
+
+    // Eliminar Base
+    function openDeleteModal(baseId) {
+        const url = "{{ route('bases.destroy', ':id') }}".replace(':id', baseId);
+        document.getElementById('deleteForm').action = url;
+        $('#deleteModal').modal('show');
+    }
 </script>
 @endpush

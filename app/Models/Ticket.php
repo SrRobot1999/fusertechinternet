@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Ticket extends Model
 {
     use HasFactory;
+    
+    public $timestamps = false;
 
     protected $table = 'tickets';
 
@@ -27,6 +29,6 @@ class Ticket extends Model
 
     public function usuario()
     {
-        return $this->belongsTo(User::class, 'usuario_id'); //corregir para que aparezca usuario en la vista Ticket
+        return $this->belongsTo(\App\Models\User::class, 'usuario_id'); // Asegúrate de usar el namespace correcto
     }
 }
