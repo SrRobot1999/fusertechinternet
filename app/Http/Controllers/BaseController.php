@@ -7,11 +7,33 @@ use Illuminate\Http\Request;
 
 class BaseController extends Controller
 {
+    // public function index()
+    // {
+    //     $bases = Base::all();
+    //     return view('bases.showbase', compact('bases'));
+    // }
+
     public function index()
     {
-        $bases = Base::all();
+        $bases = Base::withCount('zonas')->get();
         return view('bases.showbase', compact('bases'));
     }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'direccion' => 'required|string|max:255',
+            'fecha_funcionamiento' => 'required|date',
+            'altura' => 'required|numeric',
+            'color' => 'required|string|max:255',
+        ]);
+
+        Base::create($request->all());
+
+        return redirect()->route('bases')->with('success', 'Base registrada correctamente.');
+    }
+
     public function show($id)
     {
         $base = Base::findOrFail($id);

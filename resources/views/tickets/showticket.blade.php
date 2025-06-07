@@ -30,8 +30,11 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <h4>Tickets Registrados</h4>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#createModal">
+                    <i class="fas fa-plus"></i> Nuevo Ticket
+                </button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -54,8 +57,14 @@
                                 <td>{{ $ticket->usuario->nombre ?? 'Sin usuario' }}</td>
                                 <td>{{ $ticket->asunto }}</td>
                                 <td>{{ Str::limit($ticket->descripcion, 50) }}</td>
-                                <td>{{ $ticket->estado == 1 ? 'Terminado' : 'Pendiente'}}</td>
-                                <td>{{ $ticket->fecha_creacion }}</td>
+                                <td>
+                                    @if($ticket->estado == 1)
+                                    <span class="badge badge-success" style="background-color:#38a169;">Terminado</span>
+                                    @else
+                                    <span class="badge badge-warning" style="background-color:#f6ad55; color:#fff;">Pendiente</span>
+                                    @endif
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($ticket->fecha_creacion)->format('d-m-Y') }}</td>
                                 <td class="py-3 px-6 text-center space-x-2">
                                     <div class="d-flex gap-3">
                                         <button onclick="openViewModal('{{ $ticket->id }}')" class="text-green-600 hover:text-green-800 text-xl">
@@ -76,6 +85,66 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal Crear Ticket -->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="createForm" method="POST" action="{{ route('tickets.store') }}">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar Nuevo Ticket</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Cliente</label>
+                        <select class="form-control" name="cliente_id" required>
+                            <option value="">Seleccione un cliente</option>
+                            @foreach($clientes as $cliente)
+                            <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Usuario</label>
+                        <select class="form-control" name="usuario_id" required>
+                            <option value="">Seleccione un usuario</option>
+                            @foreach($usuarios as $usuario)
+                            <option value="{{ $usuario->id }}">{{ $usuario->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Asunto</label>
+                        <input type="text" class="form-control" name="asunto" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea class="form-control" name="descripcion" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select class="form-control" name="estado" required>
+                            <option value="1">Terminado</option>
+                            <option value="0">Pendiente</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de Creación</label>
+                        <input type="date" class="form-control" name="fecha_creacion" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Registrar</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -210,6 +279,11 @@
             "sortable": false,
             "targets": [6]
         }]
+    });
+
+    // Limpiar el formulario al abrir el modal
+    $('#createModal').on('show.bs.modal', function() {
+        $(this).find('form')[0].reset();
     });
 
     // Ver Ticket

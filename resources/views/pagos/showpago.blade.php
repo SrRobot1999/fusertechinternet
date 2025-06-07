@@ -30,8 +30,11 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <h4>Pagos Registrados</h4>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#createModal">
+                    <i class="fas fa-plus"></i> Nuevo Pago
+                </button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -51,7 +54,7 @@
                             <tr data-id="{{ $pago->id }}">
                                 <td>{{ $pago->cliente->nombre ?? 'Sin cliente' }}</td>
                                 <td>S/. {{ number_format($pago->monto, 2) }}</td>
-                                <td>{{ $pago->fecha_pago }}</td>
+                                <td>{{ \Carbon\Carbon::parse($pago->fecha_pago)->format('d-m-Y') }}</td>
                                 <td>{{ $pago->metodo_pago }}</td>
                                 <td>{{ $pago->referencia }}</td>
                                 <td class="py-3 px-6 text-center space-x-2">
@@ -74,6 +77,54 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal Crear Pago -->
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="createForm" method="POST" action="{{ route('pagos.store') }}">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar Nuevo Pago</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Cliente</label>
+                        <select class="form-control" name="cliente_id" id="createCliente" required>
+                            <option value="">Seleccione un cliente</option>
+                            @foreach($clientes as $cliente)
+                            <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Monto</label>
+                        <input type="number" step="0.01" class="form-control" name="monto" id="createMonto" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de Pago</label>
+                        <input type="date" class="form-control" name="fecha_pago" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Método de Pago</label>
+                        <input type="text" class="form-control" name="metodo_pago" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Referencia</label>
+                        <input type="text" class="form-control" name="referencia" id="createReferencia">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Registrar</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -188,7 +239,6 @@
 <script src="{{ asset('bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('bundles/jquery-ui/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('bundles/prism/prism.js') }}"></script>
-
 <script>
     $("#table-pagos").dataTable({
         "columnDefs": [{
@@ -247,5 +297,74 @@
         document.getElementById('deleteForm').action = url;
         $('#deleteModal').modal('show');
     }
+
+    // Al cambiar el cliente, obtener el monto del plan
+    // $('#createCliente').on('change', function() {
+    //     var clienteId = $(this).val();
+    //     if (!clienteId) {
+    //         $('#createMonto').val('');
+    //         return;
+    //     }
+    //     $.get("{{ url('pagos/get-monto') }}/" + clienteId, function(response) {
+    //         if (response.success) {
+    //             $('#createMonto').val(response.monto);
+    //         } else {
+    //             $('#createMonto').val('');
+    //         }
+    //     });
+    // });
+    
+    // MODIFICACIÓN: Se agregó la petición para autocompletar el campo referencia con "Mes X"
+    $('#createCliente').on('change', function() {
+        var clienteId = $(this).val();
+        if (!clienteId) {
+            $('#createMonto').val('');
+            $('#createReferencia').val(''); // Limpiar referencia si no hay cliente
+            return;
+        }
+        // Obtener monto
+        $.get("{{ url('pagos/get-monto') }}/" + clienteId, function(response) {
+            if (response.success) {
+                $('#createMonto').val(response.monto);
+            } else {
+                $('#createMonto').val('');
+            }
+        });
+        // Obtener siguiente mes para la referencia
+        $.get("{{ url('pagos/siguiente-mes') }}/" + clienteId, function(response) {
+            if (response.mes) {
+                $('#createReferencia').val('Mes ' + response.mes);
+            } else {
+                $('#createReferencia').val('');
+            }
+        });
+    });
+    
+    // Validar que el cliente tenga servicio antes de enviar el formulario
+    $('#createForm').on('submit', function(e) {
+        var clienteId = $('#createCliente').val();
+        var monto = $('#createMonto').val();
+        if (!monto || monto == 0) {
+            // Eliminar cualquier toast anterior
+            $('#toast-warning').remove();
+            // Crear el toast de advertencia
+            $('body').append(`
+            <div id="toast-warning" class="fixed top-5 right-5 bg-yellow-500 text-white px-4 py-3 rounded-lg shadow-lg z-[9999] transition-opacity duration-300">
+                <i class="fas fa-exclamation-triangle mr-2"></i> El cliente no cuenta con ningún servicio.
+            </div>
+        `);
+            setTimeout(() => {
+                $('#toast-warning').addClass('opacity-0');
+            }, 3000);
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // Crear Pago
+    document.getElementById('createModal').addEventListener('show.bs.modal', function() {
+        document.getElementById('createForm').reset();
+        document.getElementById('createForm').action = "{{ route('pagos.store') }}";
+    });
 </script>
 @endpush

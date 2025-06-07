@@ -18,6 +18,7 @@ class Servicio extends Model
         'plan_id',
         'zona_id',
         'fecha_inicio',
+        'fecha_fin',
         'estado'
     ];
 

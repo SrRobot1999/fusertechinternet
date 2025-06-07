@@ -41,7 +41,6 @@ class PerfilController extends Controller
         return redirect()->back()->with('success', 'Perfil actualizado correctamente.');
     }
 
-
     public function destroy($id)
     {
         $user = User::findOrFail($id);

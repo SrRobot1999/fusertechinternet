@@ -17,6 +17,22 @@ class TicketController extends Controller
         return view('tickets.showticket', compact('tickets', 'clientes', 'usuarios'));
     }
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'cliente_id' => 'required|exists:clientes,id',
+            'usuario_id' => 'required|exists:usuarios,id',
+            'asunto' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'estado' => 'required|in:0,1',
+            'fecha_creacion' => 'required|date',
+        ]);
+
+        Ticket::create($request->all());
+
+        return redirect()->route('tickets')->with('success', 'Ticket registrado correctamente.');
+    }
+
     public function show($id)
     {
         $ticket = Ticket::with(['cliente', 'usuario'])->findOrFail($id);
@@ -29,7 +45,7 @@ class TicketController extends Controller
 
         $request->validate([
             'cliente_id' => 'required|exists:clientes,id',
-            'usuario_id' => 'required|exists:users,id',
+            'usuario_id' => 'required|exists:usuarios,id',
             'asunto' => 'required|string',
             'descripcion' => 'required|string',
             'estado' => 'required|boolean',

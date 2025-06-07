@@ -51,7 +51,7 @@
                                 <td>{{ $usuario->nombre }}</td>
                                 <td>{{ $usuario->email }}</td>
                                 <td>{{ $usuario->rol->nombre ?? 'Sin rol' }}</td>
-                                <td>{{ $usuario->created_at }}</td>
+                                <td>{{ \Carbon\Carbon::parse($usuario->created_at)->format('H:i d-m-Y') }}</td>
                                 <td class="py-3 px-6 text-center space-x-2">
                                     <div class="d-flex gap-3">
                                         <button class="text-blue-600 hover:text-blue-800 text-xl" data-toggle="modal" data-target="#editModal-{{ $usuario->id }}">

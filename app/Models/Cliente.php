@@ -19,4 +19,14 @@ class Cliente extends Model
     {
         return $this->belongsTo(Zona::class);
     }
+
+    public function servicios()
+    {
+        return $this->hasMany(Servicio::class);
+    }
+
+    public function plan()
+    {
+        return $this->belongsTo(\App\Models\Plan::class);
+    }
 }

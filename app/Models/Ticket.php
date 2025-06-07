@@ -29,6 +29,6 @@ class Ticket extends Model
 
     public function usuario()
     {
-        return $this->belongsTo(\App\Models\User::class, 'usuario_id'); // Asegúrate de usar el namespace correcto
+        return $this->belongsTo(\App\Models\User::class, 'usuario_id');
     }
 }

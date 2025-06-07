@@ -9,7 +9,14 @@ class Zona extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $table = 'zonas';
 
-    protected $fillable = ['nombre'];
+    protected $fillable = ['nombre', 'descripcion', 'base_id'];
+
+    public function base()
+    {
+        return $this->belongsTo(Base::class, 'base_id');
+    }
 }

@@ -13,6 +13,7 @@ class ClienteController extends Controller
         $zonas = \App\Models\Zona::all();
         return view('clientes.showcliente', compact('clientes', 'zonas'));
     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -29,6 +30,22 @@ class ClienteController extends Controller
         return redirect()->route('clientes')
             ->with('success', 'Cliente registrado correctamente');
     }
+
+    public function quickStore(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string',
+            'dni_ruc' => 'required|string|unique:clientes,dni_ruc',
+            'telefono' => 'required|string',
+            'direccion' => 'required|string',
+            'zona_id' => 'required|exists:zonas,id',
+            'estado' => 'required|boolean'
+        ]);
+
+        $cliente = \App\Models\Cliente::create($request->all());
+        return response()->json($cliente);
+    }
+
     public function update(Request $request, $id)
     {
         $cliente = Cliente::findOrFail($id);
@@ -43,6 +60,19 @@ class ClienteController extends Controller
         ]);
 
         $cliente->update($request->all());
+
+        $cliente = \App\Models\Cliente::findOrFail($id);
+        $cliente->update($request->all());
+
+        // Si el cliente se puso inactivo, poner sus servicios en inactivo
+        if ($request->estado == 0) {
+            \App\Models\Servicio::where('cliente_id', $cliente->id)
+                ->update(['estado' => 0]);
+        } else if ($request->estado == 1) {
+            // Si el cliente se puso activo, poner sus servicios en activo
+            \App\Models\Servicio::where('cliente_id', $cliente->id)
+                ->update(['estado' => 1]);
+        }
 
         return redirect()->route('clientes')
             ->with('success', 'Cliente actualizado correctamente');

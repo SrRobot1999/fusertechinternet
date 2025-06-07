@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Base extends Model
 {
     public $timestamps = false;
-    
+
     protected $table = 'bases';
 
     protected $fillable = [
@@ -17,4 +17,9 @@ class Base extends Model
         'altura',
         'color',
     ];
+
+    public function zonas()
+    {
+        return $this->hasMany(Zona::class, 'base_id');
+    }
 }
