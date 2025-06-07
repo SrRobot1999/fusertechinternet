@@ -23,13 +23,20 @@ class PerfilController extends Controller
 
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $id,
+            'email' => 'required|email|max:255|unique:usuarios,email,' . $id,
+            'password' => 'nullable|string|min:6',
         ]);
 
-        $user->update([
+        $data = [
             'nombre' => $request->nombre,
             'email' => $request->email,
-        ]);
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = $request->password; // Se encripta automáticamente en el modelo
+        }
+
+        $user->update($data);
 
         return redirect()->back()->with('success', 'Perfil actualizado correctamente.');
     }

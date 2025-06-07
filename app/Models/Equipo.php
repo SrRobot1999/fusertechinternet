@@ -9,9 +9,9 @@ class Equipo extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
     // Nombre de la tabla
     protected $table = 'equipos';
-
     // Campos que se pueden asignar masivamente
     protected $fillable = ['tipo', 'marca', 'modelo', 'mac_address', 'stock'];
 }
