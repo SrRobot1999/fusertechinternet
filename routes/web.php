@@ -90,3 +90,8 @@ Route::delete('/tickets/{id}', [TicketController::class, 'destroy'])->name('tick
 // Rutas para reportes
 Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes');
 Route::get('/reportes/exportar', [ReporteController::class, 'exportar'])->name('reportes.exportar');
+
+
+
+// Rutas para mostrar pdf de tickets
+Route::get('/tickets/{id}', [TicketController::class, 'pdf'])->name('tickets.pdf');

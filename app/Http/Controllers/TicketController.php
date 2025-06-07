@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ticket;
 use App\Models\Cliente;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class TicketController extends Controller
@@ -63,5 +64,14 @@ class TicketController extends Controller
         $ticket->delete();
 
         return redirect()->route('tickets')->with('success', 'Ticket eliminado correctamente');
+    }
+
+
+    // Ticket PDF
+    public function pdf(Request $request, $id)
+    {
+        $data = Ticket::with(['cliente', 'usuario'])->findOrFail($id);
+        $pdf = Pdf::loadView('tickets.ticketPdf', compact('id', 'data'));
+        return $pdf->download("ticket_{$id}.pdf");
     }
 }
