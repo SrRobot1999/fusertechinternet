@@ -1,0 +1,18 @@
+{
+    "font awesome 5 brands": {
+        "normal": "font_awesome_5_brands_normal_671c947610c5d5ccaccc57b0479d2498"
+    },
+    "font awesome 5 free": {
+        "normal": "D:\\Jhonatan\\internet\\fusertechinternet\\storage\\fonts\/font_awesome_5_free_normal_cc8a588d791ed358428c09a45bddd82d",
+        "900": "font_awesome_5_free_900_9f9d8017c909b049e02d22b25c278b3a"
+    },
+    "material icons": {
+        "normal": "material_icons_normal_22ffeb0ac86c77c3f8e6876cee7740d5"
+    },
+    "nunito": {
+        "normal": "C:\\wamp64\\www\\gkm-system\\storage\\fonts\/nunito_normal_459596453d14a8e1528f9d5af4aff3f9",
+        "600": "C:\\wamp64\\www\\gkm-system\\storage\\fonts\/nunito_600_09749c38802c6d50d4e4e4b1a6b99f45",
+        "bold": "C:\\wamp64\\www\\gkm-system\\storage\\fonts\/nunito_bold_b415833b2d3d3da297b41de857b71fa0",
+        "800": "nunito_800_721571554f8c8387298b2a4b92d098ad"
+    }
+}

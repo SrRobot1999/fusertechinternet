@@ -8,6 +8,52 @@
     z-index: 1055 !important;
 }
 
-/* .modal-backdrop {
-    z-index: 1040 !important;
-} */
+/* pdf */
+
+.titleOrden {
+    font-size: 15px !important;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.title-encabezado {
+    font-size: 9px;
+}
+
+.title-body {
+    font-size: 10px;
+}
+
+.bg-print {
+    background-color: #004165;
+    color: #fff;
+    padding: 10px;
+}
+
+.b-1 {
+    border-bottom: 1px solid #000;
+}
+
+.weight-600 {
+    font-weight: 700;
+}
+
+.checks {
+    display: flex;
+    flex-direction: column;
+    row-gap: 25px;
+}
+
+.mb_ccc {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-gap: 1rem;
+
+    border-bottom: 1px solid #f4f4f4;
+    padding-bottom: 5px;
+}
+
+/* Styles calendar */
+.fc-event:hover {
+    cursor: pointer;
+}
