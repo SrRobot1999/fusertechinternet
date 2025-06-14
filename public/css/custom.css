@@ -52,3 +52,8 @@
     border-bottom: 1px solid #f4f4f4;
     padding-bottom: 5px;
 }
+
+/* Styles calendar */
+.fc-event:hover {
+    cursor: pointer;
+}

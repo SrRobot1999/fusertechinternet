@@ -10,6 +10,7 @@ use App\Http\Controllers\PagoController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\BaseController;
+use App\Http\Controllers\CalendarioController;
 use App\Http\Controllers\ZonaController;
 use App\Http\Controllers\ReporteController;
 
@@ -64,6 +65,11 @@ Route::delete('/pagos/{id}', [PagoController::class, 'destroy'])->name('pagos.de
 Route::get('/pagos/{id}', [PagoController::class, 'show'])->name('pagos.show');
 Route::post('/pagos', [PagoController::class, 'store'])->name('pagos.store');
 Route::get('/pagos/get-monto/{clienteId}', [PagoController::class, 'getMontoPorCliente'])->name('pagos.getMontoPorCliente');
+
+
+// CALENDARIO DE PAGOS
+Route::get('/calendario', [CalendarioController::class, 'index'])->name('calendario');
+
 
 // Ruta para mostrar la vista de usuarios
 Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios');

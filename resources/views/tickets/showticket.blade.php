@@ -76,7 +76,7 @@
                                         <button onclick="openDeleteModal('{{ $ticket->id }}')" class="text-red-600 hover:text-red-800 text-xl btn-delete" data-toggle="modal" data-target="#deleteModal" data-id="{{ $ticket->id }}">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
-                                        <a class="text-gray-500 hover:text-gray-800 text-xl btn-print" href="/tickets/{{ $ticket->id }}">
+                                        <a class="text-gray-500 hover:text-gray-800 text-xl btn-print" href="/tickets/{{ $ticket->id }}" target="_blank">
                                             <i class="fa-solid fa-file-pdf text-gray-500"></i>
                                         </a>
                                     </div>

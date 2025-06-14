@@ -5,17 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Ticket;
 use App\Models\Cliente;
 use App\Models\User;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
-class TicketController extends Controller
+class CalendarioController extends Controller
 {
     public function index()
     {
         $tickets = Ticket::with(['cliente', 'usuario'])->get();
         $clientes = Cliente::all();
         $usuarios = User::all();
-        return view('tickets.showticket', compact('tickets', 'clientes', 'usuarios'));
+        return view('calendario.showcalendario');
     }
 
     public function store(Request $request)
@@ -67,12 +66,5 @@ class TicketController extends Controller
     }
 
 
-    // Ticket PDF
-    public function pdf(Request $request, $id)
-    {
-        $data = Ticket::with(['cliente', 'usuario'])->findOrFail($id);
-        $pdf = Pdf::loadView('tickets.ticketPdf', compact('id', 'data'));
-        // return $pdf->download("ticket_{$id}.pdf");
-        return $pdf->stream("ticket_{$data->cliente->nombre}.pdf");
-    }
+    
 }
