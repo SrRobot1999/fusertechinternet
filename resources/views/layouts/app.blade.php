@@ -147,6 +147,9 @@
     <script src="{{ asset('js/scripts.js') }}"></script>
     <!-- Custom JS File -->
     <script src="{{ asset('js/custom.js') }}"></script>
+
+    <!-- Zona para inyectar scripts personalizados desde las vistas hijas -->
+    @stack('scripts')
 </body>
 
 </html>

@@ -27,6 +27,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Ruta raíz opcional (redirige al login si no está autenticado)
 Route::get('/', function () {
     return redirect()->route('login');
+    
 });
 
 // Ruta para mostrar el perfil del usuario autenticado
@@ -37,13 +38,13 @@ Route::resource('usuarios', PerfilController::class);
 Route::put('/usuarios/{id}', [PerfilController::class, 'update'])->name('usuarios.update');
 
 // Ruta para mostrar la vista de equipos
-Route::get('/equipos', [EquipoController::class, 'show'])->name('equipos');
+Route::get('/equipos', [EquipoController::class, 'show'])->middleware('auth')->name('equipos');
 Route::put('/equipos/{id}', [EquipoController::class, 'update'])->name('equipos.update');
 Route::delete('/equipos/{id}', [EquipoController::class, 'destroy'])->name('equipos.destroy');
 Route::post('/equipos', [EquipoController::class, 'store'])->name('equipos.store');
 
 // Ruta para mostrar la vista de clientes 
-Route::get('/clientes', [ClienteController::class, 'show'])->name('clientes');
+Route::get('/clientes', [ClienteController::class, 'show'])->middleware('auth')->name('clientes');
 Route::put('/clientes/{id}', [ClienteController::class, 'update'])->name('clientes.update');
 Route::delete('/clientes/{id}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
 Route::post('/clientes', [ClienteController::class, 'store'])->name('clientes.store');
