@@ -17,10 +17,9 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\HomeController;
 
 // Ruta principal protegida (home)
-Route::get('/home', function () {
-    return view('home');
- })->middleware('auth')->name('home');
-// Route::get('/home', [HomeController::class, 'index'])->middleware('auth')->name('home');
+Route::get('/home', [HomeController::class, 'index'])->middleware('auth')->name('home');
+Route::get('/chartZonas', [HomeController::class, 'chartZonas'])->name('home.chartZonas');
+Route::get('/pagosPorMes', [HomeController::class, 'pagosPorMes'])->name('home.pagosPorMess');
 
 // Mostrar formulario de login
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -31,7 +30,6 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Ruta raíz opcional (redirige al login si no está autenticado)
 Route::get('/', function () {
     return redirect()->route('login');
-    
 });
 
 // Ruta para mostrar el perfil del usuario autenticado

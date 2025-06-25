@@ -1,9 +1,7 @@
 "use strict";
 
 $(function () {
-    chart1();
     chart2();
-    chart3();
     chart4();
 
     // select all on checkbox click
@@ -40,84 +38,6 @@ $(function () {
 });
 
 
-
-function chart1() {
-    var options = {
-        chart: {
-            height: 230,
-            type: "line",
-            shadow: {
-                enabled: true,
-                color: "#000",
-                top: 18,
-                left: 7,
-                blur: 10,
-                opacity: 1
-            },
-            toolbar: {
-                show: false
-            }
-        },
-        colors: ["#786BED", "#999b9c"],
-        dataLabels: {
-            enabled: true
-        },
-        stroke: {
-            curve: "smooth"
-        },
-        series: [{
-            name: "High - 2019",
-            data: [5, 15, 14, 36, 32, 32]
-        },
-        {
-            name: "Low - 2019",
-            data: [7, 11, 30, 18, 25, 13]
-        }
-        ],
-        grid: {
-            borderColor: "#e7e7e7",
-            row: {
-                colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-                opacity: 0.0
-            }
-        },
-        markers: {
-            size: 6
-        },
-        xaxis: {
-            categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-
-            labels: {
-                style: {
-                    colors: "#9aa0ac"
-                }
-            }
-        },
-        yaxis: {
-            title: {
-                text: "Income"
-            },
-            labels: {
-                style: {
-                    color: "#9aa0ac"
-                }
-            },
-            min: 5,
-            max: 40
-        },
-        legend: {
-            position: "top",
-            horizontalAlign: "right",
-            floating: true,
-            offsetY: -25,
-            offsetX: -5
-        }
-    };
-
-    var chart = new ApexCharts(document.querySelector("#chart1"), options);
-
-    chart.render();
-}
 
 function chart2() {
     var options = {
@@ -193,81 +113,7 @@ function chart2() {
 
 }
 
-function chart3() {
-    var options = {
-        chart: {
-            height: 250,
-            type: 'line',
-            zoom: {
-                enabled: false
-            },
-            toolbar: {
-                show: false
-            },
 
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            width: [5, 7, 5],
-            curve: 'straight',
-            dashArray: [0, 8, 5]
-        },
-        series: [{
-            name: "Option 1",
-            data: [45, 52, 38, 24, 33, 26, 21, 20]
-        },
-        {
-            name: "Option 2",
-            data: [35, 41, 62, 42, 13, 18, 29, 37]
-        },
-        {
-            name: 'Option 3',
-            data: [87, 57, 74, 99, 75, 38, 62, 47]
-        }
-        ],
-        legend: {
-            show: false,
-        },
-        markers: {
-            size: 0,
-
-            hover: {
-                sizeOffset: 6
-            }
-        },
-        xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug'
-            ],
-            labels: {
-                style: {
-                    colors: "#9aa0ac"
-                }
-            }
-        },
-        yaxis: {
-            labels: {
-                style: {
-                    color: "#9aa0ac"
-                }
-            }
-        },
-        tooltip: {
-
-        },
-        grid: {
-            borderColor: '#f1f1f1',
-        }
-    }
-
-    var chart = new ApexCharts(
-        document.querySelector("#chart3"),
-        options
-    );
-
-    chart.render();
-}
 function chart4() {
     var options = {
         chart: {

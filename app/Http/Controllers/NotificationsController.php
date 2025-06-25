@@ -7,11 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class NotificationsController extends Controller
 {
-    public function index()
-    {
-        return "hola";
-    }
-
     public function showNotification()
     {
         $fechaActual = Carbon::now()->toDateString();
