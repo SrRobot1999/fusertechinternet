@@ -36,7 +36,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-striped" id="table-profile">
+                    <table class="table table-striped table-general" id="table-profile">
                         <thead>
                             <tr>
                                 <th>Tipo</th>
@@ -236,12 +236,12 @@
 @push('scripts_template')
 <script src="{{ asset('bundles/datatables/datatables.min.js') }}"></script>
 <script src="{{ asset('bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('js/page/datatables.js') }}"></script>
 <script src="{{ asset('bundles/jquery-ui/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('bundles/prism/prism.js') }}"></script>
 <script>
     $(document).ready(function() {
-        $('#table-profile').DataTable();
-
+        
         // Rellenar el formulario de editar
         $('#editModal').on('show.bs.modal', function(event) {
             const button = $(event.relatedTarget);

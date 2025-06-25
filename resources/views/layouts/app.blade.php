@@ -12,9 +12,9 @@
     <title>Otika - Admin Dashboard Template</title>
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('css/app.min.css') }}">
-    
+
     @stack('styles_template')
-    
+
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/components.css') }}">
@@ -136,7 +136,7 @@
     @include('partials.footer') <!-- Para tu footer -->
 
 
-
+    
 
     <!-- General JS Scripts -->
     <script src="{{ asset('js/app.min.js') }}"></script>

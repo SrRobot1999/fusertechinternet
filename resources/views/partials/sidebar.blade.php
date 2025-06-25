@@ -38,12 +38,12 @@
                     <span>Pagos</span>
                 </a>
             </li>
-            <li class="dropdown {{ Request::is('calendario') ? 'active' : '' }}">
+            <!-- <li class="dropdown {{ Request::is('calendario') ? 'active' : '' }}">
                 <a href="{{ route('calendario') }}" class="nav-link">
                     <i data-feather="calendar"></i>
-                    <span>Calendar</span>
+                    <span>Calendario</span>
                 </a>
-            </li>
+            </li> -->
             <li class="dropdown {{ Request::is('bases') ? 'active' : '' }}">
                 <a href="{{ route('bases') }}" class="nav-link">
                     <i data-feather="wifi"></i>
