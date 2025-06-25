@@ -2,11 +2,16 @@
 <nav class="navbar navbar-expand-lg main-navbar sticky">
     <div class="form-inline mr-auto">
         <ul class="navbar-nav mr-3">
-            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg
-									collapse-btn"> <i data-feather="align-justify"></i></a></li>
-            <li><a href="#" class="nav-link nav-link-lg fullscreen-btn">
+            <li>
+                <a href="#" data-toggle="sidebar" class="nav-link nav-link-lg collapse-btn">
+                    <i data-feather="align-justify"></i>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link nav-link-lg fullscreen-btn">
                     <i data-feather="maximize"></i>
-                </a></li>
+                </a>
+            </li>
             <li>
                 <form class="form-inline mr-auto">
                     <div class="search-element">
@@ -20,7 +25,7 @@
         </ul>
     </div>
     <ul class="navbar-nav navbar-right">
-        <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
+        <!-- <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
                 class="nav-link nav-link-lg message-toggle"><i data-feather="mail"></i>
                 <span class="badge headerBadge1">
                     6 </span> </a>
@@ -80,7 +85,7 @@
                     <a href="#">View All <i class="fas fa-chevron-right"></i></a>
                 </div>
             </div>
-        </li>
+        </li> -->
         <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
                 class="nav-link notification-toggle nav-link-lg"><i data-feather="bell" class="bell"></i>
             </a>
@@ -92,36 +97,43 @@
                     </div>
                 </div>
                 <div class="dropdown-list-content dropdown-list-icons">
-                    <a href="#" class="dropdown-item dropdown-item-unread"> <span
-                            class="dropdown-item-icon bg-primary text-white"> <i class="fas
-												fa-code"></i>
-                        </span> <span class="dropdown-item-desc"> Template update is
-                            available now! <span class="time">2 Min
-                                Ago</span>
+                    <a href="#" class="dropdown-item dropdown-item-unread">
+                        <span class="dropdown-item-icon bg-primary text-white">
+                            <i class="fas fa-code"></i>
                         </span>
-                    </a> <a href="#" class="dropdown-item"> <span class="dropdown-item-icon bg-info text-white"> <i class="far
-												fa-user"></i>
-                        </span> <span class="dropdown-item-desc"> <b>You</b> and <b>Dedik
-                                Sugiharto</b> are now friends <span class="time">10 Hours
-                                Ago</span>
+                        <span class="dropdown-item-desc"> Template update is available now!
+                            <span class="time">2 Min Ago</span>
                         </span>
-                    </a> <a href="#" class="dropdown-item"> <span class="dropdown-item-icon bg-success text-white"> <i
-                                class="fas
-												fa-check"></i>
-                        </span> <span class="dropdown-item-desc"> <b>Kusnaedi</b> has
-                            moved task <b>Fix bug header</b> to <b>Done</b> <span class="time">12
-                                Hours
-                                Ago</span>
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <span class="dropdown-item-icon bg-info text-white">
+                            <i class="far fa-user"></i>
                         </span>
-                    </a> <a href="#" class="dropdown-item"> <span class="dropdown-item-icon bg-danger text-white"> <i
-                                class="fas fa-exclamation-triangle"></i>
-                        </span> <span class="dropdown-item-desc"> Low disk space. Let's
-                            clean it! <span class="time">17 Hours Ago</span>
+                        <span class="dropdown-item-desc">
+                            <b>You</b> and <b>Dedik Sugiharto</b> are now friends <span class="time">10 Hours Ago</span>
                         </span>
-                    </a> <a href="#" class="dropdown-item"> <span class="dropdown-item-icon bg-info text-white"> <i class="fas
-												fa-bell"></i>
-                        </span> <span class="dropdown-item-desc"> Welcome to Otika
-                            template! <span class="time">Yesterday</span>
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <span class="dropdown-item-icon bg-success text-white">
+                            <i class="fas fa-check"></i>
+                        </span>
+                        <span class="dropdown-item-desc">
+                            <b>Kusnaedi</b> has moved task <b>Fix bug header</b> to <b>Done</b> <span class="time">12 Hours Ago </span>
+                        </span>
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <span class="dropdown-item-icon bg-danger text-white">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </span>
+                        <span class="dropdown-item-desc"> Low disk space. Let's clean it! <span class="time">17 Hours Ago</span>
+                        </span>
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <span class="dropdown-item-icon bg-info text-white">
+                            <i class="fas fa-bell"></i>
+                        </span>
+                        <span class="dropdown-item-desc"> Welcome to Otika template!
+                            <span class="time">Yesterday</span>
                         </span>
                     </a>
                 </div>
@@ -130,22 +142,49 @@
                 </div>
             </div>
         </li>
-        <li class="dropdown"><a href="#" data-toggle="dropdown"
-                class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="{{ asset('img/user.png') }}"
-                    class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
+
+        <li class="dropdown">
+            @php
+            $nombre = Auth::user()->nombre ?? 'Usuario';
+            $partes = explode(' ', trim($nombre));
+
+            // Obtener solo las dos primeras palabras (nombre y apellido)
+            $iniciales = '';
+            if (count($partes) >= 2) {
+            $iniciales = strtoupper(mb_substr($partes[0], 0, 1) . mb_substr($partes[1], 0, 1));
+            } elseif (count($partes) === 1) {
+            $iniciales = strtoupper(mb_substr($partes[0], 0, 1));
+            } else {
+            $iniciales = 'U';
+            }
+            @endphp
+
+            <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                <div class="user-initials-circle" id="userInitials">{{ $iniciales }}</div>
+                <span class="d-sm-none d-lg-inline-block"></span>
+            </a>
+
             <div class="dropdown-menu dropdown-menu-right pullDown">
-                <div class="dropdown-title">Hello Sarah Smith</div>
-                <a href="profile.html" class="dropdown-item has-icon"> <i class="far
-										fa-user"></i> Profile
-                </a> <a href="timeline.html" class="dropdown-item has-icon"> <i class="fas fa-bolt"></i>
-                    Activities
-                </a> <a href="#" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
-                    Settings
+                <div class="dropdown-title">Hello</div>
+                <a href="{{ route('perfil') }}" class="dropdown-item has-icon">
+                    <i class="far fa-user"></i> Perfil
                 </a>
+                <a href="{{ route('tickets') }}" class="dropdown-item has-icon">
+                    <i class="fas fa-bolt"></i> Actividades
+                </a>
+                <!-- <a href="#" class="dropdown-item has-icon">
+                    <i class="fas fa-cog"></i> Configuraciones
+                </a> -->
                 <div class="dropdown-divider"></div>
-                <a href="auth-login.html" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
-                    Logout
-                </a>
+                <!-- <a href="" class="dropdown-item has-icon text-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a> -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="dropdown-item has-icon text-danger">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
             </div>
         </li>
     </ul>

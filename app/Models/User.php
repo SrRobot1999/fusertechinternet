@@ -17,7 +17,12 @@ class User extends Authenticatable
     public $timestamps = false;
 
     // Campos que se pueden rellenar
-    protected $fillable = ['email', 'password', 'nombre', 'rol_id'];
+    protected $fillable = [
+        'nombre',
+        'email',
+        'password',
+        'rol_id'
+    ];
 
     // Campos que deben estar ocultos
     protected $hidden = ['password'];
