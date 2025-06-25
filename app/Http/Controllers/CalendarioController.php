@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Ticket;
 use App\Models\Cliente;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CalendarioController extends Controller
 {
     public function index()
     {
-        $tickets = Ticket::with(['cliente', 'usuario'])->get();
-        $clientes = Cliente::all();
-        $usuarios = User::all();
-        return view('calendario.showcalendario');
+        $mesActual = Carbon::now()->month;
+        $anioActual = Carbon::now()->year;
+
+        $data = DB::select("CALL sp_get_calendar_by_month($mesActual, $anioActual)");
+        return view('calendario.showcalendario', compact('data'));
     }
 
     public function store(Request $request)
@@ -64,7 +67,4 @@ class CalendarioController extends Controller
 
         return redirect()->route('tickets')->with('success', 'Ticket eliminado correctamente');
     }
-
-
-    
 }

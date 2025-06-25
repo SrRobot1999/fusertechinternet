@@ -11,6 +11,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\CalendarioController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\ZonaController;
 use App\Http\Controllers\ReporteController;
 
@@ -102,3 +103,6 @@ Route::get('/reportes/exportar', [ReporteController::class, 'exportar'])->name('
 
 // Rutas para mostrar pdf de tickets
 Route::get('/tickets/{id}', [TicketController::class, 'pdf'])->name('tickets.pdf');
+
+// Mostrar notoficaciones
+Route::get('/showNotifications', [NotificationsController::class, 'showNotification'])->name('notifications.showNotifications');
