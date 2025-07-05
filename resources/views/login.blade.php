@@ -8,71 +8,77 @@
     <title>Login</title>
     @vite('resources/css/app.css') <!-- Incluye el CSS compilado -->
     <link rel="stylesheet" href="@fortawesome/fontawesome-free/css/all.min.css"> <!-- Font Awesome -->
+
+    <link rel="stylesheet" href="{{ asset('css/app.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/bootstrap-social/bootstrap-social.css')}}">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/components.css ') }}">
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <link rel='shortcut icon' type='image/x-icon' href="{{ asset('img/favicon.ico')}}" />
 </head>
 
-<body class="flex min-h-screen font-sans bg-gray-100">
-    <div class="flex w-full">
-        <!-- Espacio para el logotipo -->
-        <div class="hidden md:flex w-1/2 bg-gray-100 items-center justify-center ">
-            <img src="images/logofusertech.jpg" alt="Logotipo" class="max-w-xs rounded shadow-md">
-        </div>
-
-        <!-- Formulario de inicio de sesión -->
-        <div class="w-full md:w-1/2 flex items-center justify-center p-6">
-            <div class="w-full max-w-md p-6 bg-white rounded shadow-md">
-                <h1 class="text-2xl font-bold text-center">Iniciar Sesión</h1>
-
-                @if ($errors->any())
-                <div class="mb-4 text-red-600 text-sm">
-                    @foreach ($errors->all() as $error)
-                    <div>{{ $error }}</div>
-                    @endforeach
+<body class="p-0 m-0 body-login">
+    <!-- <div class="loader"></div> -->
+    <!-- <div id="app">
+        <div class="row "> -->
+    <div class="col-lg-12">
+        <section class="section">
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h4>Login</h4>
+                               
+                            </div>
+                            <div class="card-body">
+                                 @if ($errors->any())
+                                <div class="w-100 mb-4 text-red-600 text-sm">
+                                    @foreach ($errors->all() as $error)
+                                    <div class="text-danger font-14">{{ $error }}</div>
+                                    @endforeach
+                                </div>
+                                @endif
+                                <form action="{{ route('login.post') }}" method="POST" class="needs-validation" novalidate="">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" id="email" name="email" value="{{ old('email') }}" class="form-control" tabindex="1" required autofocus>
+                                        <div class="invalid-feedback">
+                                            Please fill in your email
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="d-block">
+                                            <label for="password" class="control-label">Password</label>
+                                            <div class="float-right">
+                                                <a href="auth-forgot-password.html" class="text-small">
+                                                    ¿Olvidaste tu contraseña?
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <input type="password" id="password" name="password" class="form-control" tabindex="2" required>
+                                        <div class="invalid-feedback">
+                                            please fill in your password
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                                            Login
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                @endif
-
-                <form action="{{ route('login.post') }}" method="POST" class="mt-4">
-                    @csrf
-                    <!-- Usuario -->
-                    <div class="mb-4">
-                        <label for="email" class="block text-sm font-medium text-gray-700">Usuario</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
-                                <i class="fas fa-user"></i>
-                            </span>
-                            <input type="email" id="email" name="email" value="{{ old('email') }}"
-                                class="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-                                required>
-                        </div>
-                    </div>
-
-                    <!-- Contraseña -->
-                    <div class="mb-4">
-                        <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
-                                <i class="fas fa-lock"></i>
-                            </span>
-                            <input type="password" id="password" name="password"
-                                class="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-                                required>
-                        </div>
-                    </div>
-
-                    <!-- Botón -->
-                    <button type="submit"
-                        class="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 flex items-center justify-center gap-2 transition-all duration-200 ease-in-out group">
-                        <i class="fas fa-sign-in-alt group-hover:translate-x-1 transform transition-transform duration-200 ease-in-out"></i>
-                        Iniciar Sesión
-                    </button>
-
-                    <!-- Enlace -->
-                    <div class="mt-4 text-center">
-                        <a href="#" class="text-sm text-blue-500 hover:underline">¿Olvidaste tu contraseña?</a>
-                    </div>
-                </form>
             </div>
-        </div>
+        </section>
     </div>
+    <!-- </div>
+    </div> -->
 </body>
 
 </html>
