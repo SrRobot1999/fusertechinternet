@@ -52,7 +52,7 @@
                                 <th>Dirección</th>
                                 <th>Fecha de Inicio</th>
                                 <th>Altura</th>
-                                <th>Color</th>
+                                <!-- <th>Color</th> -->
                                 <!-- <th>Creado</th> -->
                                 <th>Acciones</th>
                             </tr>
@@ -65,7 +65,7 @@
                                 <td>{{ $base->direccion }}</td>
                                 <td>{{ \Carbon\Carbon::parse($base->fecha_funcionamiento)->format('d-m-Y') }}</td>
                                 <td>{{ $base->altura }}</td>
-                                <td>{{ $base->color }}</td>
+                                <!-- <td>{{ $base->color }}</td> -->
                                 <!-- <td>{{ \Carbon\Carbon::parse($base->created_at)->format('H:i d-m-Y') }}</td> -->
                                 <td class="py-3 px-6 text-center space-x-2">
                                     <div class="d-flex gap-3">
@@ -150,8 +150,8 @@
                     <dd class="col-sm-8" id="viewFecha"></dd>
                     <dt class="col-sm-4">Altura</dt>
                     <dd class="col-sm-8" id="viewAltura"></dd>
-                    <dt class="col-sm-4">Color</dt>
-                    <dd class="col-sm-8" id="viewColor"></dd>
+                    <!-- <dt class="col-sm-4">Color</dt> -->
+                    <!-- <dd class="col-sm-8" id="viewColor"></dd> -->
                 </dl>
             </div>
             <div class="modal-footer">
@@ -190,10 +190,10 @@
                         <label>Altura</label>
                         <input type="number" step="0.01" class="form-control" name="altura" required>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label>Color</label>
                         <input type="text" class="form-control" name="color" required>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -234,10 +234,10 @@
                         <label>Altura</label>
                         <input type="number" step="0.01" class="form-control" name="altura" id="editAlturaInput" required>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label>Color</label>
                         <input type="text" class="form-control" name="color" id="editColorInput" required>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -299,7 +299,7 @@
                 document.getElementById('viewDireccion').textContent = data.direccion ?? '';
                 document.getElementById('viewFecha').textContent = data.fecha_funcionamiento ?? '';
                 document.getElementById('viewAltura').textContent = data.altura ?? '';
-                document.getElementById('viewColor').textContent = data.color ?? '';
+                // document.getElementById('viewColor').textContent = data.color ?? '';
                 $('#viewModal').modal('show');
             });
     }
@@ -318,7 +318,7 @@
             document.getElementById('editFechaInput').value = `${year}-${month}-${day}`;
 
             document.getElementById('editAlturaInput').value = row.children[3].textContent.trim();
-            document.getElementById('editColorInput').value = row.children[4].textContent.trim();
+            //document.getElementById('editColorInput').value = row.children[4].textContent.trim();
             // Actualizar la acción del formulario
             const url = "{{ route('bases.update', ':id') }}".replace(':id', baseId);
             document.getElementById('editForm').action = url;

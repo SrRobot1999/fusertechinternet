@@ -7,12 +7,6 @@ use Illuminate\Http\Request;
 
 class BaseController extends Controller
 {
-    // public function index()
-    // {
-    //     $bases = Base::all();
-    //     return view('bases.showbase', compact('bases'));
-    // }
-
     public function index()
     {
         $bases = Base::withCount('zonas')->get();
@@ -26,7 +20,7 @@ class BaseController extends Controller
             'direccion' => 'required|string|max:255',
             'fecha_funcionamiento' => 'required|date',
             'altura' => 'required|numeric',
-            'color' => 'required|string|max:255',
+            // 'color' => 'required|string|max:255',
         ]);
 
         Base::create($request->all());
@@ -49,7 +43,7 @@ class BaseController extends Controller
             'direccion' => 'required|string',
             'fecha_funcionamiento' => 'required|date',
             'altura' => 'required|numeric',
-            'color' => 'required|string',
+            // 'color' => 'required|string',
         ]);
 
         $base->update($request->all());
