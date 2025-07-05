@@ -27,7 +27,7 @@ class UsuarioController extends Controller
             'rol_id' => 'required|exists:roles,id',
             'password' => 'nullable|min:8',
         ]);
-    
+        //return $request->all();
         $data = $request->only(['nombre', 'email', 'rol_id']);
 
         // Solo actualiza la contraseña si el campo no está vacío

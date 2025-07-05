@@ -42,7 +42,6 @@
             $nombre = Auth::user()->nombre ?? 'Usuario';
             $partes = explode(' ', trim($nombre));
 
-            // Obtener solo las dos primeras palabras (nombre y apellido)
             $iniciales = '';
             if (count($partes) >= 2) {
             $iniciales = strtoupper(mb_substr($partes[0], 0, 1) . mb_substr($partes[1], 0, 1));
@@ -52,23 +51,29 @@
             $iniciales = 'U';
             }
             @endphp
-
             <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 <div class="user-initials-circle" id="userInitials">{{ $iniciales }}</div>
                 <span class="d-sm-none d-lg-inline-block"></span>
             </a>
 
             <div class="dropdown-menu dropdown-menu-right pullDown">
-                <div class="dropdown-title">Hello</div>
+                @php
+                $nombreCompleto = Auth::user()->nombre ?? 'Usuario';
+                $partesNombre = explode(' ', trim($nombreCompleto));
+                $primerosDosNombres = implode(' ', array_slice($partesNombre, 0, 2));
+                @endphp
+                <div class="dropdown-title">
+                    Hello {{ $primerosDosNombres }}
+                    @if (!empty(Auth::user()->usuario))
+                    ({{ Auth::user()->usuario }})
+                    @endif
+                </div>
                 <a href="{{ route('perfil') }}" class="dropdown-item has-icon">
                     <i class="far fa-user"></i> Perfil
                 </a>
                 <a href="{{ route('tickets') }}" class="dropdown-item has-icon">
                     <i class="fas fa-bolt"></i> Actividades
                 </a>
-                <!-- <a href="#" class="dropdown-item has-icon">
-                    <i class="fas fa-cog"></i> Configuraciones
-                </a> -->
                 <div class="dropdown-divider"></div>
                 <!-- <a href="" class="dropdown-item has-icon text-danger">
                     <i class="fas fa-sign-out-alt"></i> Logout
@@ -120,7 +125,6 @@
                 document.getElementById("notificationList").innerHTML = lista;
             }
         });
-
 
     });
 </script>

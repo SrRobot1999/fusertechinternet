@@ -55,7 +55,7 @@
                             <div class="card-content">
                                 <h5 class="font-15">Tickets</h5>
                                 <h2 class="mb-3 font-18">{{$ticketsActivos}}</h2>
-                                <p class="mb-0"><span class="col-green">Activos</span>
+                                <p class="mb-0"><span class="col-red">Pendientes</span>
                                 </p>
                             </div>
                         </div>
@@ -128,17 +128,17 @@
     <div class="col-12 col-sm-12 col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h4>Chart</h4>
+                <h4>Servicios por planes</h4>
             </div>
             <div class="card-body">
-                <div id="chart4" class="chartsh"></div>
+                <div id="chartPlanes" class="chartsh"></div>
             </div>
         </div>
     </div>
     <div class="col-12 col-sm-12 col-lg-4">
         <div class="card">
             <div class="card-header">
-                <h4>Chart</h4>
+                <h4>Pagos trimestrales</h4>
             </div>
             <div class="card-body">
                 <div id="chart2" class="chartsh"></div>
@@ -155,7 +155,7 @@
 <!-- JS Libraies -->
 <script src="{{ asset('bundles/apexcharts/apexcharts.min.js') }}"></script>
 <!-- Page Specific JS File -->
-<script src="{{ asset('js/page/index.js') }}"></script>
+<!-- <script src="{{ asset('js/page/index.js') }}"></script> -->
 <script>
     function pagosPorMes() {
         $.ajax({
@@ -264,7 +264,6 @@
         });
     }
 
-
     function chartZonas() {
         $.ajax({
             url: "/chartZonas",
@@ -339,17 +338,161 @@
                     }]
                 };
 
-
                 var chart = new ApexCharts(document.querySelector("#chartZonas"), options);
                 chart.render();
             }
         });
     }
 
+    function chartPlanes() {
+        $.ajax({
+            url: "/chartPlanes",
+            method: "GET",
+            dataType: "json",
+            success: function(respuesta) {
+                const labels = respuesta.map(item => item.plan);
+                const values = respuesta.map(item => item.cantidad);
+
+                var options = {
+                    series: values,
+                    labels: labels,
+                    chart: {
+                        type: 'donut',
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function(val, opts) {
+                            return opts.w.config.series[opts.seriesIndex];
+                        },
+                        style: {
+                            fontSize: '14px',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val) {
+                                return val;
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'right'
+                    },
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {
+                            chart: {
+                                width: 200
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }]
+                };
+
+                var chart = new ApexCharts(document.querySelector("#chartPlanes"), options);
+                chart.render();
+            }
+        });
+    }
+
+    function chartPagosTrimestrales() {
+        $.ajax({
+            url: "/chartPagosTrimestrales",
+            method: "GET",
+            dataType: "json",
+            success: function(respuesta) {
+                console.log('Respuesta completa:', respuesta); // Para debug
+
+                const labels = respuesta.map(item => item.mes);
+                // Convertir explícitamente a números y manejar valores null/undefined
+                const values = respuesta.map(item => {
+                    const valor = parseFloat(item.total);
+                    return isNaN(valor) ? 0 : valor;
+                });
+
+                console.log('Labels:', labels); // Para debug
+                console.log('Values:', values); // Para debug
+
+                var options = {
+                    series: values,
+                    labels: labels,
+                    chart: {
+                        type: 'donut',
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function(val, opts) {
+                            let num = opts.w.config.series[opts.seriesIndex];
+                            return 'S/ ' + (typeof num === 'number' ? num.toFixed(2) : '0.00');
+                        },
+                        style: {
+                            fontSize: '14px',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val) {
+                                return 'S/ ' + (typeof val === 'number' ? val.toFixed(2) : '0.00');
+                            }
+                        }
+                    },
+                    plotOptions: {
+                        pie: {
+                            donut: {
+                                labels: {
+                                    show: true,
+                                    name: {
+                                        show: true
+                                    },
+                                    value: {
+                                        show: true,
+                                        formatter: function(val) {
+                                            return 'S/ ' + (typeof val === 'number' ? parseFloat(val).toFixed(2) : '0.00');
+                                        }
+                                    },
+                                    total: {
+                                        show: false
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'right'
+                    },
+                    responsive: [{
+                        breakpoint: 480,
+                        options: {
+                            chart: {
+                                width: 200
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }]
+                };
+
+                var chart = new ApexCharts(document.querySelector("#chart2"), options);
+                chart.render();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error en AJAX:', error);
+                console.error('Status:', status);
+                console.error('Response:', xhr.responseText);
+            }
+        });
+    }
 
     document.addEventListener("DOMContentLoaded", function() {
+        chartPlanes();
         chartZonas();
         pagosPorMes();
+        chartPagosTrimestrales();
     });
 </script>
 @endpush

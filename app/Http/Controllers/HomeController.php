@@ -24,7 +24,7 @@ class HomeController extends Controller
             ->count();
 
         $ticketsActivos = DB::table('tickets')
-            ->where('estado', 1)
+            ->where('estado', 0)
             ->count();
 
         $montoMesActual = DB::table('pagos')
@@ -72,6 +72,48 @@ class HomeController extends Controller
             $data[] = [
                 'zona' => $zona->nombre,
                 'cantidad' => $count,
+            ];
+        }
+
+        return response()->json($data);
+    }
+
+    public function chartPlanes()
+    {
+        $planes = DB::table('planes')->select('id', 'nombre')->get();
+
+        $data = [];
+        foreach ($planes as $plan) {
+            $cantidad = DB::table('servicios')->where('plan_id', $plan->id)->count();
+            $data[] = [
+                'plan' => $plan->nombre,
+                'cantidad' => $cantidad,
+            ];
+        }
+
+        return response()->json($data);
+    }
+
+    public function chartPagosTrimestrales()
+    {
+        Carbon::setLocale('es');
+
+        $fechaInicio = Carbon::now()->copy()->subMonths(2)->startOfMonth();
+        $fechaFin = Carbon::now()->endOfMonth();
+
+        $pagos = DB::table('pagos')
+            ->select(DB::raw('MONTH(fecha_pago) as mes'), DB::raw('SUM(monto) as total'))
+            ->whereBetween('fecha_pago', [$fechaInicio, $fechaFin])
+            ->groupBy(DB::raw('MONTH(fecha_pago)'))
+            ->orderBy('mes')
+            ->get();
+
+        $data = [];
+        foreach ($pagos as $pago) {
+            $nombreMes = Carbon::create()->month($pago->mes)->translatedFormat('F');
+            $data[] = [
+                'mes' => ucfirst($nombreMes),
+                'total' => $pago->total,
             ];
         }
 

@@ -19,7 +19,9 @@ use App\Http\Controllers\HomeController;
 // Ruta principal protegida (home)
 Route::get('/home', [HomeController::class, 'index'])->middleware('auth')->name('home');
 Route::get('/chartZonas', [HomeController::class, 'chartZonas'])->name('home.chartZonas');
-Route::get('/pagosPorMes', [HomeController::class, 'pagosPorMes'])->name('home.pagosPorMess');
+Route::get('/pagosPorMes', [HomeController::class, 'pagosPorMes'])->name('home.pagosPorMes');
+Route::get('/chartPlanes', [HomeController::class, 'chartPlanes'])->name('home.chartPlanes');
+Route::get('/chartPagosTrimestrales', [HomeController::class, 'chartPagosTrimestrales'])->name('home.chartPagosTrimestrales');
 
 // Mostrar formulario de login
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
