@@ -398,95 +398,93 @@
         });
     }
 
-    function chartPagosTrimestrales() {
-        $.ajax({
-            url: "/chartPagosTrimestrales",
-            method: "GET",
-            dataType: "json",
-            success: function(respuesta) {
-                console.log('Respuesta completa:', respuesta); // Para debug
+    $.ajax({
+        url: "/chartPagosTrimestrales",
+        method: "GET",
+        dataType: "json",
+        success: function(respuesta) {
+            console.log('Respuesta completa:', respuesta);
 
-                const labels = respuesta.map(item => item.mes);
-                // Convertir explícitamente a números y manejar valores null/undefined
-                const values = respuesta.map(item => {
-                    const valor = parseFloat(item.total);
-                    return isNaN(valor) ? 0 : valor;
-                });
+            const labels = respuesta.map(item => item.mes);
+            const values = respuesta.map(item => {
+                const valor = parseFloat(item.total);
+                return isNaN(valor) ? 0 : valor;
+            });
 
-                console.log('Labels:', labels); // Para debug
-                console.log('Values:', values); // Para debug
+            console.log('Labels:', labels);
+            console.log('Values:', values);
 
-                var options = {
-                    series: values,
-                    labels: labels,
-                    chart: {
-                        type: 'donut',
+            var options = {
+                series: [{
+                    name: 'Total',
+                    data: values
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 350
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '50%',
+                        endingShape: 'rounded'
                     },
-                    dataLabels: {
-                        enabled: true,
-                        formatter: function(val, opts) {
-                            let num = opts.w.config.series[opts.seriesIndex];
-                            return 'S/ ' + (typeof num === 'number' ? num.toFixed(2) : '0.00');
+                },
+                dataLabels: {
+                    enabled: true,
+                    formatter: function(val) {
+                        return 'S/ ' + val.toFixed(2);
+                    },
+                    style: {
+                        fontSize: '12px'
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return 'S/ ' + val.toFixed(2);
+                        }
+                    }
+                },
+                xaxis: {
+                    categories: labels
+                },
+                yaxis: {
+                    labels: {
+                        formatter: function(val) {
+                            return 'S/ ' + val.toFixed(2);
+                        }
+                    }
+                },
+                legend: {
+                    position: 'top'
+                },
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            height: 250
                         },
-                        style: {
-                            fontSize: '14px',
-                            fontWeight: 'bold'
-                        }
-                    },
-                    tooltip: {
-                        y: {
-                            formatter: function(val) {
-                                return 'S/ ' + (typeof val === 'number' ? val.toFixed(2) : '0.00');
+                        plotOptions: {
+                            bar: {
+                                columnWidth: '70%'
                             }
                         }
-                    },
-                    plotOptions: {
-                        pie: {
-                            donut: {
-                                labels: {
-                                    show: true,
-                                    name: {
-                                        show: true
-                                    },
-                                    value: {
-                                        show: true,
-                                        formatter: function(val) {
-                                            return 'S/ ' + (typeof val === 'number' ? parseFloat(val).toFixed(2) : '0.00');
-                                        }
-                                    },
-                                    total: {
-                                        show: false
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    legend: {
-                        position: 'right'
-                    },
-                    responsive: [{
-                        breakpoint: 480,
-                        options: {
-                            chart: {
-                                width: 200
-                            },
-                            legend: {
-                                position: 'bottom'
-                            }
-                        }
-                    }]
-                };
+                    }
+                }]
+            };
 
-                var chart = new ApexCharts(document.querySelector("#chart2"), options);
-                chart.render();
-            },
-            error: function(xhr, status, error) {
-                console.error('Error en AJAX:', error);
-                console.error('Status:', status);
-                console.error('Response:', xhr.responseText);
-            }
-        });
-    }
+            var chart = new ApexCharts(document.querySelector("#chart2"), options);
+            chart.render();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error en AJAX:', error);
+            console.error('Status:', status);
+            console.error('Response:', xhr.responseText);
+        }
+    });
+
+
 
     document.addEventListener("DOMContentLoaded", function() {
         chartPlanes();
