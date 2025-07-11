@@ -487,9 +487,9 @@
 
 
     document.addEventListener("DOMContentLoaded", function() {
-        chartPlanes();
-        chartZonas();
         pagosPorMes();
+        chartZonas();
+        chartPlanes();
         chartPagosTrimestrales();
     });
 </script>

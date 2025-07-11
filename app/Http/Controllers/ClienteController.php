@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreClienteRequest;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
 
@@ -14,22 +15,15 @@ class ClienteController extends Controller
         return view('clientes.showcliente', compact('clientes', 'zonas'));
     }
 
-    public function store(Request $request)
+    public function store(StoreClienteRequest $request)
     {
-        $request->validate([
-            'nombre' => 'required|string',
-            'dni_ruc' => 'required|string|unique:clientes,dni_ruc',
-            'telefono' => 'required|string',
-            'direccion' => 'required|string',
-            'zona_id' => 'required|exists:zonas,id',
-            'estado' => 'required|boolean'
-        ]);
-
-        \App\Models\Cliente::create($request->all());
+        // La validación ahora es manejada por StoreClienteRequest
+        \App\Models\Cliente::create($request->validated());
 
         return redirect()->route('clientes')
             ->with('success', 'Cliente registrado correctamente');
     }
+
 
     public function quickStore(Request $request)
     {
@@ -77,15 +71,6 @@ class ClienteController extends Controller
         return redirect()->route('clientes')
             ->with('success', 'Cliente actualizado correctamente');
     }
-
-    // public function destroy($id)
-    // {
-    //     $cliente = Cliente::findOrFail($id);
-    //     $cliente->delete();
-
-    //     return redirect()->route('clientes')
-    //         ->with('success', 'Cliente eliminado correctamente');
-    // }
 
     public function destroy($id)
     {

@@ -112,7 +112,13 @@
                     </div>
                     <div class="form-group">
                         <label>Método de Pago</label>
-                        <input type="text" class="form-control" name="metodo_pago" required>
+                        <select class="form-control" name="metodo_pago" id="createMetodoPago" required>
+                            <option value="">Seleccione un método</option>
+                            <option value="Yape">Yape</option>
+                            <option value="Plin">Plin</option>
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="POS">POS</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Referencia</label>

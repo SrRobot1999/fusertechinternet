@@ -1,12 +1,11 @@
 @extends('layouts.app')
+@section('content')
 
 @push('styles_template')
 <link rel="stylesheet" href="{{ asset('bundles/datatables/datatables.min.css') }}">
 <link rel="stylesheet" href="{{ asset('bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('bundles/prism/prism.css') }}">
 @endpush
-
-@section('content')
 
 @if (session('success'))
 <div id="toast-success" class="fixed top-5 right-5 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg z-[9999] transition-opacity duration-300">
@@ -281,9 +280,7 @@
 <script src="{{ asset('js/page/datatables.js') }}"></script>
 <script src="{{ asset('bundles/jquery-ui/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('bundles/prism/prism.js') }}"></script>
-
 <script>
-
 
     // Script para limpiar el formulario al abrir el modal
     $('#createModal').on('show.bs.modal', function() {
@@ -324,6 +321,7 @@
             document.getElementById('editForm').action = url;
         });
     });
+
     // Eliminar Base
     function openDeleteModal(baseId) {
         const url = "{{ route('bases.destroy', ':id') }}".replace(':id', baseId);

@@ -71,7 +71,7 @@
     </div>
 </div>
 
-{{-- Script para cambiar la URL del botón según la pestaña activa --}}
+<!-- Script para cambiar la URL del botón según la pestaña activa -->
 @push('scripts')
 <script>
     function getExportUrl(tipo) {

@@ -42,7 +42,11 @@ class ReporteController extends Controller
             ->paginate(10);
 
         $pagos = Pago::with('cliente')
-            ->when($mesPago, fn($q) => $q->whereMonth('fecha_pago', $mesPago))
+            ->when($mesPago, function($q) use ($mesPago) {
+                $fecha = $mesPago . '-01'; // Convierte "2025-07" a "2025-07-01"
+                $q->whereYear('fecha_pago', date('Y', strtotime($fecha)))
+                  ->whereMonth('fecha_pago', date('m', strtotime($fecha)));
+            })
             ->paginate(10);
 
         return view('reportes.index', compact('clientes', 'servicios', 'pagos'));
@@ -86,7 +90,11 @@ class ReporteController extends Controller
             $data['servicios'] = $servicios;
         } elseif ($tipo === 'pagos') {
             $pagos = Pago::with('cliente')
-                ->when($mesPago, fn($q) => $q->whereMonth('fecha_pago', $mesPago))
+                ->when($mesPago, function($q) use ($mesPago) {
+                    $fecha = $mesPago . '-01'; // Convierte "2025-07" a "2025-07-01"
+                    $q->whereYear('fecha_pago', date('Y', strtotime($fecha)))
+                      ->whereMonth('fecha_pago', date('m', strtotime($fecha)));
+                })
                 ->get();
             $data['pagos'] = $pagos;
         }

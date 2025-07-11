@@ -42,7 +42,7 @@
                         <thead>
                             <tr>
                                 <th>Nombre</th>
-                                <th>DNI / RUC</th>
+                                <th>DNI</th>
                                 <th>Teléfono</th>
                                 <th>Dirección</th>
                                 <th>Zona</th>
@@ -130,12 +130,12 @@
                         <input type="text" class="form-control" name="nombre" id="editNombre" required>
                     </div>
                     <div class="form-group">
-                        <label>DNI / RUC</label>
-                        <input type="text" class="form-control" name="dni_ruc" id="editDniRuc" required>
+                        <label>DNI</label>
+                        <input type="text" class="form-control" name="dni_ruc" id="editDniRuc" required pattern="\d{1,8}" maxlength="8" title="Solo se permiten hasta 8 números" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,8);">
                     </div>
                     <div class="form-group">
                         <label>Teléfono</label>
-                        <input type="text" class="form-control" name="telefono" id="editTelefono">
+                        <input type="text" class="form-control" name="telefono" id="editTelefono" required pattern="\d{1,9}" maxlength="9" title="Solo se permiten hasta 9 números" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,9);">
                     </div>
                     <div class="form-group">
                         <label>Dirección</label>
@@ -223,12 +223,13 @@
                         <input type="text" class="form-control" name="nombre" required>
                     </div>
                     <div class="form-group">
-                        <label>DNI / RUC</label>
-                        <input type="text" class="form-control" name="dni_ruc" required>
+                        <label>DNI</label>
+                        <input type="text" class="form-control" name="dni_ruc" required pattern="\d+" title="Solo se permiten números" oninput="this.value = this.value.replace(/[^0-8]/g, '');">
+                        <!-- <input type="text" class="form-control" name="dni_ruc" required> -->
                     </div>
                     <div class="form-group">
                         <label>Teléfono</label>
-                        <input type="text" class="form-control" name="telefono" required>
+                        <input type="text" class="form-control" name="telefono" required pattern="\d+" title="Solo se permiten números" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                     </div>
                     <div class="form-group">
                         <label>Dirección</label>
